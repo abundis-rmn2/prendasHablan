@@ -6,7 +6,8 @@ import Step3_Clothing from "./Form/Step3_Clothing";
 import Step4_Consent from "./Form/Step4_Consent";
 import FormProgress from "./Form/FormProgress";
 import Modal from "./Form/Modal";
-import FormInfo from "./Form/FormInfo"; // Import the new component
+import FormInfo from "./Form/FormInfo";
+import SummaryModal from "./Form/SummaryModal"; // Import the new SummaryModal component
 import useFormStorage from "../hooks/useFormStorage";
 
 const FormPage = ({ csvData = [] }) => {
@@ -15,6 +16,7 @@ const FormPage = ({ csvData = [] }) => {
     useFormStorage("formData");
 
   const [step, setStep] = useState(1);
+  const [showSummaryModal, setShowSummaryModal] = useState(false); // State for the summary modal
 
   // Load saved data into the form on mount
   useEffect(() => {
@@ -53,9 +55,20 @@ const FormPage = ({ csvData = [] }) => {
       saveFormData({ ...storedData, ...data, step: step + 1 }); // Merge new data with existing stored data
       nextStep(data);
     } else {
-      console.log("Final step reached, clearing data");
-      resetFormData(); // Clear data after submission
+      console.log("Final step reached, showing summary modal");
+      setShowSummaryModal(true); // Show the summary modal
     }
+  };
+
+  const handleFinalSubmit = () => {
+    console.log("Final submission confirmed");
+    resetFormData(); // Clear data after submission
+    setShowSummaryModal(false); // Close the summary modal
+  };
+
+  const handleCancelSummary = () => {
+    console.log("Summary modal canceled");
+    setShowSummaryModal(false); // Close the summary modal
   };
 
   const handleStartNewForm = () => {
@@ -81,6 +94,13 @@ const FormPage = ({ csvData = [] }) => {
             setShowModal(false);
           }} // Close modal and continue with saved data
           onStartNew={handleStartNewForm} // Start a new form
+        />
+      )}
+      {showSummaryModal && (
+        <SummaryModal
+          data={storedData}
+          onConfirm={handleFinalSubmit}
+          onCancel={handleCancelSummary}
         />
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -109,7 +129,7 @@ const FormPage = ({ csvData = [] }) => {
           <button type="submit">{step === 4 ? "Enviar" : "Siguiente"}</button>
         </div>
       </form>
-      <FormInfo data={storedData} /> {/* Display saved data */}
+      <FormInfo data={storedData} />
     </>
   );
 };

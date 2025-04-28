@@ -1,7 +1,15 @@
 import React from "react";
+import { useWatch } from "react-hook-form";
 import * as styles from "./FormStyles.module.css"; // Import shared styles
 
 const Step1_BasicInfo = ({ register, control, errors }) => {
+  // Observar el valor del campo 'relationship'
+  const relationship = useWatch({
+    control,
+    name: "relationship",
+    defaultValue: ""
+  });
+
   return (
     <div>
       <h3>Información Básica</h3>
@@ -34,12 +42,19 @@ const Step1_BasicInfo = ({ register, control, errors }) => {
         </label>
       </div>
 
-      <div className={styles.formGroup}>
-        <label>
-          Si tu respuesta fue "otra" relación, especifica:
-          <input className={styles.fullWidthInput} {...register("other_relationship")} />
-        </label>
-      </div>
+      {/* Mostrar solo cuando se seleccione "Otra" */}
+      {relationship === "Otra" && (
+        <div className={styles.formGroup}>
+          <label>
+            Si tu respuesta fue "otra" relación, especifica:
+            <input 
+              className={styles.fullWidthInput} 
+              {...register("other_relationship", { required: true })} 
+            />
+            {errors.other_relationship && <span className={styles.errorText}>Campo obligatorio</span>}
+          </label>
+        </div>
+      )}
 
       <div className={styles.formGroup}>
         <label>
