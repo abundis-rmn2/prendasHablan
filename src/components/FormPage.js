@@ -4,6 +4,7 @@ import Step1_BasicInfo from "./Form/Step1_BasicInfo";
 import Step2_Disappearance from "./Form/Step2_Disappearance";
 import Step3_Clothing from "./Form/Step3_Clothing";
 import Step4_Consent from "./Form/Step4_Consent";
+import Step5_ThankYou from "./Form/Step5_ThankYou"; // Import the new Step5_ThankYou component
 import FormProgress from "./Form/FormProgress";
 import Modal from "./Form/Modal";
 import FormInfo from "./Form/FormInfo";
@@ -23,12 +24,17 @@ const FormPage = ({ csvData = [] }) => {
     console.log("FormPage mounted");
     if (storedData && !isLoading) {
       console.log("Stored data found:", storedData);
-      Object.keys(storedData).forEach((key) => {
-        setValue(key, storedData[key]); // Populate form fields with saved data
-        console.log(`Set value for ${key}:`, storedData[key]);
-      });
-      setStep(storedData.lastStep || 1); // Restore the last step
-      console.log("Restored step:", storedData.lastStep || 1);
+      if (Object.keys(storedData).length === 0) {
+        reset(); // Ensure form fields are cleared if storedData is empty
+        console.log("Form fields cleared due to empty stored data");
+      } else {
+        Object.keys(storedData).forEach((key) => {
+          setValue(key, storedData[key]); // Populate form fields with saved data
+          console.log(`Set value for ${key}:`, storedData[key]);
+        });
+        setStep(storedData.lastStep || 1); // Restore the last step
+        console.log("Restored step:", storedData.lastStep || 1);
+      }
     }
   }, [storedData, isLoading, setValue]);
 
@@ -64,6 +70,7 @@ const FormPage = ({ csvData = [] }) => {
     console.log("Final submission confirmed");
     resetFormData(); // Clear data after submission
     setShowSummaryModal(false); // Close the summary modal
+    setStep(5); // Move to step 5 (thank-you message)
   };
 
   const handleCancelSummary = () => {
@@ -73,10 +80,11 @@ const FormPage = ({ csvData = [] }) => {
 
   const handleStartNewForm = () => {
     console.log("Starting new form");
-    resetFormData(); // Clear localStorage and reset form
+    resetFormData(); // Clear localStorage and reset form data
     reset(); // Reset form fields
     setStep(1); // Go back to step 1
     console.log("Form reset and step set to 1");
+    saveFormData({}); // Explicitly save an empty object to clear storedData
   };
 
   if (isLoading) {
@@ -103,32 +111,36 @@ const FormPage = ({ csvData = [] }) => {
           onCancel={handleCancelSummary}
         />
       )}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormProgress currentStep={step} totalSteps={4} />
+      {step === 5 ? (
+        <Step5_ThankYou onStartNewForm={handleStartNewForm} />
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormProgress currentStep={step} totalSteps={4} />
 
-        {step === 1 && (
-          <Step1_BasicInfo
-            register={register}
-            control={control}
-            errors={errors}
-          />
-        )}
-        {step === 2 && <Step2_Disappearance register={register} watch={watch} errors={errors} />}
-        {step === 3 && (
-          <Step3_Clothing
-            register={register}
-            watch={watch}
-            errors={errors}
-            csvData={csvData}
-          />
-        )}
-        {step === 4 && <Step4_Consent register={register} watch={watch} errors={errors} />}
+          {step === 1 && (
+            <Step1_BasicInfo
+              register={register}
+              control={control}
+              errors={errors}
+            />
+          )}
+          {step === 2 && <Step2_Disappearance register={register} watch={watch} errors={errors} />}
+          {step === 3 && (
+            <Step3_Clothing
+              register={register}
+              watch={watch}
+              errors={errors}
+              csvData={csvData}
+            />
+          )}
+          {step === 4 && <Step4_Consent register={register} watch={watch} errors={errors} />}
 
-        <div>
-          {step > 1 && <button type="button" onClick={prevStep}>Anterior</button>}
-          <button type="submit">{step === 4 ? "Enviar" : "Siguiente"}</button>
-        </div>
-      </form>
+          <div>
+            {step > 1 && <button type="button" onClick={prevStep}>Anterior</button>}
+            <button type="submit">{step === 4 ? "Enviar" : "Siguiente"}</button>
+          </div>
+        </form>
+      )}
       <FormInfo data={storedData} />
     </>
   );

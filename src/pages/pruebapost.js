@@ -24,11 +24,15 @@ const PruebaPost = () => {
   };
 
   const handleTestPost = async () => {
-    const result = await postGoogleSheet(mockData);
-    if (result.success) {
-      alert("Prueba exitosa: Información enviada correctamente.");
-    } else {
-      alert(`Prueba fallida: ${result.error}`);
+    try {
+      const result = await postGoogleSheet(mockData);
+      if (result.success) {
+        alert("Prueba exitosa: Información enviada correctamente.");
+      } else {
+        alert(`Prueba fallida: ${result.error}`);
+      }
+    } catch (error) {
+      alert(`Error inesperado: ${error.message}`);
     }
   };
 

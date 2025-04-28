@@ -1,10 +1,20 @@
+import { fetchGeoData } from "../utils/analytics"; // Ensure the correct relative path
+
 export const postGoogleSheet = async (data) => {
   try {
     console.log("Sending data to Google Sheets:", data);
-    const response = await fetch("https://your-serverless-function-url.com/save-to-google-sheets", {
+
+    // Fetch geoData
+    const geoData = await fetchGeoData();
+    const { city, country_name: country } = geoData;
+
+    // Include geoData in the payload
+    const payload = { ...data, city, country };
+
+    const response = await fetch("https://lasprendashablan.tejer.red/api/saveToGoogleSheet.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     });
 
     if (response.ok) {

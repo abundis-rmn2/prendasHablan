@@ -1,6 +1,6 @@
 let geoDataCache = null;
 
-const fetchGeoData = async () => {
+export const fetchGeoData = async () => { // Ensure this is a named export
   if (!geoDataCache) {
     try {
       const response = await fetch('https://ipapi.co/json/');
