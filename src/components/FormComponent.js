@@ -18,6 +18,13 @@ const FormComponent = ({ csvData, selectedIndicio }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "form_submit",
+      event_category: "Form",
+      event_label: `Form submitted for ${formData.prendaIndicio}`,
+      value: 1,
+    });
     try {
       const response = await fetch("/api/update-csv", {
         method: "POST",
