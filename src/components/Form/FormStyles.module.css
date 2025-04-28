@@ -1,0 +1,120 @@
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.fullWidthInput {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea.fullWidthInput {
+  height: 6rem; /* Approximately 4 lines */
+}
+
+.errorText {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.imagePopup {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popupImage {
+  max-width: 150px;
+  max-height: 150px;
+  display: block;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+  justify-content: space-between; /* Ensure spacing between items */
+}
+
+.thumbnail {
+  position: relative;
+  width: 25%; /* Each thumbnail takes up 25% of the container */
+  max-width: 25%; /* Ensure it doesn't exceed 25% */
+  height: auto; /* Maintain aspect ratio */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.thumbnailImage {
+  width: 100%; /* Ensure the image fits within the thumbnail */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover;
+}
+
+.deselectButton {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+
+.modalButton {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #007bff;
+  color: white;
+}
+
+.modalButton:hover {
+  background: #0056b3;
+}

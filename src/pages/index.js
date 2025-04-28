@@ -1,7 +1,7 @@
 import * as React from "react";
 import Layout from "../components/layout";
 //import IndicioList from "../components/IndicioList";
-import FormComponent from "../components/FormComponent";
+import FormPage from "../components/FormPage"; // Updated import
 import useLoadCsvData from "../utils/useLoadCsvData";
 import * as styles from "../components/index.module.css";
 import { initGTM, trackEvent } from "../utils/analytics";
@@ -35,7 +35,7 @@ const IndexPage = () => {
       <p>Cualquier duda por favor contáctenos; tengan certeza que sus datos personales serán cuidados y resguardados. Gracias de antemano.</p>
       </div>
       { /* <IndicioList csvData={csvData} /> */ }
-      <FormComponent csvData={csvData} />
+      <FormPage csvData={csvData} />
     </Layout>
   );
 };
