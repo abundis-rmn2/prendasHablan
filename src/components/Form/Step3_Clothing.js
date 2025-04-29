@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as styles from "./FormStyles.module.css"; // Import shared styles
 
 const Step3_Clothing = ({ register, watch, errors, csvData = [] }) => {
   const [selectedIndicios, setSelectedIndicios] = useState([]);
   const contactedAuthorities = watch("contacted_authorities");
 
-  console.log("Step 3 loaded with csvData:", csvData);
-
-  const handleDoubleClick = (item) => {
-    if (!selectedIndicios.some((selected) => selected.id === item.id)) {
-      setSelectedIndicios((prev) => [...prev, item]);
+  useEffect(() => {
+    if (csvData.length > 0) {
+      // Preselect the indicios from the provided csvData
+      setSelectedIndicios(csvData);
     }
-  };
+  }, [csvData]);
 
   const handleSelectChange = (e) => {
     const options = Array.from(e.target.selectedOptions).map((option) => option.value);
@@ -35,15 +34,12 @@ const Step3_Clothing = ({ register, watch, errors, csvData = [] }) => {
             className={styles.fullWidthInput}
             {...register("recognized_clothing", { required: true })}
             multiple
+            value={selectedIndicios.map((item) => item.INDICIO)} // Use value to control the selected options
             onChange={handleSelectChange}
           >
             {csvData.length > 0 ? (
               csvData.map((item) => (
-                <option
-                  key={item.id}
-                  value={item.INDICIO}
-                  onDoubleClick={() => handleDoubleClick(item)} // Add to selection on double-click
-                >
+                <option key={item.id} value={item.INDICIO}>
                   {item.INDICIO}
                 </option>
               ))

@@ -2,13 +2,12 @@ import * as React from "react";
 import { graphql } from "gatsby";
 import { Helmet } from "react-helmet"; // Import Helmet for meta tags
 import Layout from "../components/layout";
-import FormComponent from "../components/FormComponent"; // Importar el formulario
+import FormPage from "../components/FormPage"; // Replace FormComponent with FormPage
 import ShareButtons from "../components/ShareButtons"; // Import ShareButtons
 
 const IndicioTemplate = ({ data }) => {
   const item = data.completeDataCsv;
   const imageUrl = `https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}.jpg`;
-
 
   return (
     <Layout>
@@ -31,7 +30,7 @@ const IndicioTemplate = ({ data }) => {
         <img src={imageUrl} alt={item.INDICIO} style={{ maxWidth: "100%", height: "auto", maxHeight: "23rem" }} />
         <ShareButtons indicio={item.INDICIO} />
       </div>
-      <FormComponent csvData={[item]} selectedIndicio={item.INDICIO} />
+      <FormPage csvData={[item]} /> {/* Pass csvData to FormPage */}
     </Layout>
   );
 };
