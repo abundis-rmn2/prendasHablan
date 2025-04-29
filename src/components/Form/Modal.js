@@ -1,7 +1,7 @@
 import React from "react";
 import * as styles from "./FormStyles.module.css"; // Import shared styles
 
-const Modal = ({ show, onContinue, onStartNew }) => {
+const Modal = ({ show, onContinue, onStartNew, resetFormData }) => {
   if (!show) return null;
 
   console.log("Modal displayed");
@@ -34,7 +34,7 @@ const Modal = ({ show, onContinue, onStartNew }) => {
             className={styles.modalButton}
             onClick={() => {
               console.log("Delete data button clicked");
-              onStartNew();
+              resetFormData(); // Properly clear localStorage
             }}
           >
             Borrar Datos

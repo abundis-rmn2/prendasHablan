@@ -11,7 +11,10 @@ const Step4_Consent = ({ register, watch, errors }) => {
       <div className={styles.formGroup}>
         <label>
           ¿Estarías dispuesta a compartir tu historia? *
-          <select className={styles.fullWidthInput} {...register("willing_to_share", { required: true })}>
+          <select
+            className={styles.fullWidthInput}
+            {...register("willing_to_share", { required: true })} // Ensure this field is registered
+          >
             <option value="">Selecciona...</option>
             <option value="Sí">Sí</option>
             <option value="No">No</option>
@@ -26,8 +29,9 @@ const Step4_Consent = ({ register, watch, errors }) => {
           <label>
             Si tu respuesta fue "sí", facilítanos un medio de contacto (Teléfono o correo) *
             <input
+              type="text"
               className={styles.fullWidthInput}
-              {...register("contact_info", { required: true })}
+              {...register("contact_info", { required: true })} // Ensure this field is registered
             />
             {errors.contact_info && <span className={styles.errorText}>Campo obligatorio</span>}
           </label>
@@ -37,7 +41,11 @@ const Step4_Consent = ({ register, watch, errors }) => {
       <div className={styles.formGroup}>
         <label>
           Si deseas compartir la ficha de búsqueda, adjunta el archivo.
-          <input type="file" className={styles.fullWidthInput} {...register("search_file")} />
+          <input
+            type="file"
+            className={styles.fullWidthInput}
+            {...register("search_file")} // Ensure this field is registered
+          />
         </label>
       </div>
 
@@ -47,7 +55,7 @@ const Step4_Consent = ({ register, watch, errors }) => {
           <input
             type="checkbox"
             className={styles.fullWidthInput}
-            {...register("consent", { required: true })}
+            {...register("consent", { required: true })} // Ensure this field is registered
           />
           {errors.consent && <span className={styles.errorText}>Debes aceptar el consentimiento</span>}
         </label>

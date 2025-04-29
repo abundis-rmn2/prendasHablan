@@ -56,13 +56,28 @@ const FormPage = ({ csvData = [] }) => {
 
   const onSubmit = (data) => {
     console.log("Form submitted with data:", data);
+
+    // Ensure consent is explicitly set to true if checked
+    if (data.consent === true || data.consent === "true") {
+      data.consent = true;
+    } else {
+      data.consent = false;
+    }
+
+    // Save all data to localStorage before proceeding
+    saveFormData({ ...storedData, ...data });
+
     if (step < 4) {
       console.log("Saving data and moving to next step:", { ...data, step: step + 1 });
       saveFormData({ ...storedData, ...data, step: step + 1 }); // Merge new data with existing stored data
       nextStep(data);
     } else {
-      console.log("Final step reached, showing summary modal");
-      setShowSummaryModal(true); // Show the summary modal
+      if (data.consent) {
+        console.log("Final step reached, showing summary modal");
+        setShowSummaryModal(true); // Show the summary modal only if consent is true
+      } else {
+        alert("Debes aceptar el consentimiento para enviar el formulario.");
+      }
     }
   };
 
@@ -84,7 +99,6 @@ const FormPage = ({ csvData = [] }) => {
     reset(); // Reset form fields
     setStep(1); // Go back to step 1
     console.log("Form reset and step set to 1");
-    saveFormData({}); // Explicitly save an empty object to clear storedData
   };
 
   if (isLoading) {
@@ -102,6 +116,11 @@ const FormPage = ({ csvData = [] }) => {
             setShowModal(false);
           }} // Close modal and continue with saved data
           onStartNew={handleStartNewForm} // Start a new form
+          resetFormData={() => {
+            resetFormData(); // Clear localStorage
+            reset(); // Clear form fields
+            setStep(1); // Reset to step 1
+          }}
         />
       )}
       {showSummaryModal && (

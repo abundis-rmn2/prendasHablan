@@ -24,6 +24,16 @@ try {
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'Unknown';
     $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
 
+    // Define the fixed structure for the CSV
+    $csvColumns = [
+        'id', 'timestamp', 'ip', 'city', 'country', 'user_agent',
+        'name', 'location', 'relationship', 'other_relationship', 'age',
+        'last_seen', 'has_job_offer', 'job_offer_type', 'contact_medium',
+        'recognized_clothing', 'clothing_owner', 'recognition_reason',
+        'contacted_authorities', 'authority_details', 'willing_to_share',
+        'contact_info', 'search_file', 'consent'
+    ];
+
     // Use geoData from input
     $city = $inputData['city'] ?? 'Unknown';
     $country = $inputData['country'] ?? 'Unknown';
@@ -31,15 +41,29 @@ try {
     // Remove geoData from input to avoid duplication
     unset($inputData['city'], $inputData['country']);
 
-    // Prepare data for CSV
-    $csvData = array_merge([
-        'id' => $id,
-        'timestamp' => $timestamp,
-        'ip' => $ip,
-        'city' => $city,
-        'country' => $country,
-        'user_agent' => $userAgent
-    ], $inputData);
+    // Sanitize input data and ensure all keys are present
+    $sanitizedData = [];
+    foreach ($csvColumns as $column) {
+        if ($column === 'id') {
+            $sanitizedData[$column] = $id;
+        } elseif ($column === 'timestamp') {
+            $sanitizedData[$column] = $timestamp;
+        } elseif ($column === 'ip') {
+            $sanitizedData[$column] = $ip;
+        } elseif ($column === 'city') {
+            $sanitizedData[$column] = $city;
+        } elseif ($column === 'country') {
+            $sanitizedData[$column] = $country;
+        } elseif ($column === 'user_agent') {
+            $sanitizedData[$column] = $userAgent;
+        } else {
+            $value = $inputData[$column] ?? '-'; // Use '-' for missing keys
+            if (is_array($value)) {
+                $value = implode(", ", $value); // Convert arrays to comma-separated strings
+            }
+            $sanitizedData[$column] = $value === '' || $value === null ? '-' : $value;
+        }
+    }
 
     // Define CSV file path
     $csvFile = __DIR__ . '/data.csv';
@@ -55,11 +79,11 @@ try {
 
     // Write headers if file is new
     if (!$fileExists) {
-        fputcsv($file, array_keys($csvData));
+        fputcsv($file, $csvColumns);
     }
 
     // Write data to CSV
-    fputcsv($file, $csvData);
+    fputcsv($file, $sanitizedData);
     fclose($file);
 
     // Respond with success

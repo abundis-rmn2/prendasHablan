@@ -42,9 +42,9 @@ const useFormStorage = (key) => {
   const resetFormData = () => {
     console.log("Resetting form data");
     localStorage.removeItem(key);
-    setStoredData({});
+    setStoredData({}); // Clear all form content
     setShowModal(false);
-    console.log("Form data cleared and modal hidden");
+    console.log("Form data cleared, reset to step 1, and modal hidden");
   };
 
   return {
