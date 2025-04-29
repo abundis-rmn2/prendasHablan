@@ -30,7 +30,10 @@ const IndicioTemplate = ({ data }) => {
         <img src={imageUrl} alt={item.INDICIO} style={{ maxWidth: "100%", height: "auto", maxHeight: "23rem" }} />
         <ShareButtons indicio={item.INDICIO} />
       </div>
-      <FormPage csvData={[item]} /> {/* Pass csvData to FormPage */}
+      <FormPage 
+        csvData={[item]} 
+        preselectIndicio={true} // Ensure the indicio is preselected
+      />
     </Layout>
   );
 };

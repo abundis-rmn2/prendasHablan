@@ -11,7 +11,7 @@ import FormInfo from "./Form/FormInfo";
 import SummaryModal from "./Form/SummaryModal"; // Import the new SummaryModal component
 import useFormStorage from "../hooks/useFormStorage";
 
-const FormPage = ({ csvData = [] }) => {
+const FormPage = ({ csvData = [], preselectIndicio = false }) => {
   const { register, handleSubmit, watch, control, reset, setValue, formState: { errors } } = useForm();
   const { storedData, saveFormData, resetFormData, showModal, setShowModal, isLoading } =
     useFormStorage("formData");
@@ -147,9 +147,11 @@ const FormPage = ({ csvData = [] }) => {
           {step === 3 && (
             <Step3_Clothing
               register={register}
+              setValue={setValue} // Pass setValue to Step3_Clothing
               watch={watch}
               errors={errors}
               csvData={csvData}
+              noIndicioSelected={!preselectIndicio} // Pass noIndicioSelected based on preselectIndicio
             />
           )}
           {step === 4 && <Step4_Consent register={register} watch={watch} errors={errors} />}

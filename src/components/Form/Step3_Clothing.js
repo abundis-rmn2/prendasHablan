@@ -1,26 +1,36 @@
 import React, { useState, useEffect } from "react";
 import * as styles from "./FormStyles.module.css"; // Import shared styles
 
-const Step3_Clothing = ({ register, watch, errors, csvData = [] }) => {
+const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noIndicioSelected }) => {
   const [selectedIndicios, setSelectedIndicios] = useState([]);
   const contactedAuthorities = watch("contacted_authorities");
 
   useEffect(() => {
-    if (csvData.length > 0) {
+    if (!noIndicioSelected && csvData.length > 0) {
       // Preselect the indicios from the provided csvData
       setSelectedIndicios(csvData);
+      if (setValue) {
+        setValue("recognized_clothing", csvData.map((item) => item.INDICIO)); // Update form state
+      }
     }
-  }, [csvData]);
+  }, [csvData, setValue, noIndicioSelected]);
 
   const handleSelectChange = (e) => {
     const options = Array.from(e.target.selectedOptions).map((option) => option.value);
     const selectedItems = csvData.filter((item) => options.includes(item.INDICIO));
     console.log("Selected items:", selectedItems);
     setSelectedIndicios(selectedItems);
+    if (setValue) {
+      setValue("recognized_clothing", options); // Update form state
+    }
   };
 
   const handleDeselect = (id) => {
-    setSelectedIndicios((prev) => prev.filter((item) => item.id !== id));
+    const updatedIndicios = selectedIndicios.filter((item) => item.id !== id);
+    setSelectedIndicios(updatedIndicios);
+    if (setValue) {
+      setValue("recognized_clothing", updatedIndicios.map((item) => item.INDICIO)); // Update form state
+    }
   };
 
   return (

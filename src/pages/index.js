@@ -6,9 +6,12 @@ import useLoadCsvData from "../utils/useLoadCsvData";
 import * as styles from "../components/index.module.css";
 import { initGTM, trackEvent } from "../utils/analytics";
 import { Helmet } from "react-helmet";
+import { useLocation } from "@reach/router"; // Import useLocation
 
 const IndexPage = () => {
   const csvData = useLoadCsvData();
+  const location = useLocation(); // Get the current location
+  const preselectIndicio = location.pathname.startsWith("/indicio/"); // Determine if an indicio should be preselected
 
   React.useEffect(() => {
     initGTM();
@@ -35,7 +38,7 @@ const IndexPage = () => {
       <p>Cualquier duda por favor contáctenos; tengan certeza que sus datos personales serán cuidados y resguardados. Gracias de antemano.</p>
       </div>
       { /* <IndicioList csvData={csvData} /> */ }
-      <FormPage csvData={csvData} />
+      <FormPage csvData={csvData} preselectIndicio={preselectIndicio} />
     </Layout>
   );
 };
