@@ -32,7 +32,9 @@ const IndicioTemplate = ({ data }) => {
       </div>
       <FormPage 
         csvData={[item]} 
-        preselectIndicio={true} // Ensure the indicio is preselected
+        preselectIndicio={true} 
+        formContext={`indicio_${item.INDICIO}`} 
+        stepOrder={[3, 2, 1, 4]} 
       />
     </Layout>
   );

@@ -1,21 +1,24 @@
 import * as React from "react";
 import Layout from "../components/layout";
-//import IndicioList from "../components/IndicioList";
+import IndicioList from "../components/IndicioList";
 import FormPage from "../components/FormPage"; // Updated import
 import useLoadCsvData from "../utils/useLoadCsvData";
 import * as styles from "../components/index.module.css";
 import { initGTM, trackEvent } from "../utils/analytics";
 import { Helmet } from "react-helmet";
 import { useLocation } from "@reach/router"; // Import useLocation
+import useFormStorage from "../hooks/useFormStorage"; // Import useFormStorage
 
 const IndexPage = () => {
   const csvData = useLoadCsvData();
   const location = useLocation(); // Get the current location
   const preselectIndicio = location.pathname.startsWith("/indicio/"); // Determine if an indicio should be preselected
+  const { logAllForms } = useFormStorage(); // Destructure logAllForms
 
   React.useEffect(() => {
     initGTM();
     trackEvent("page_view", "Index", "Index Page Loaded", 1);
+    logAllForms(); // Log all saved forms in localStorage
   }, []);
 
   return (
@@ -38,7 +41,13 @@ const IndexPage = () => {
       <p>Cualquier duda por favor contáctenos; tengan certeza que sus datos personales serán cuidados y resguardados. Gracias de antemano.</p>
       </div>
       { /* <IndicioList csvData={csvData} /> */ }
-      <FormPage csvData={csvData} preselectIndicio={preselectIndicio} />
+      <IndicioList csvData={csvData} />
+      <FormPage 
+        csvData={csvData} 
+        preselectIndicio={preselectIndicio} 
+        formContext="default" 
+        stepOrder={[1, 2, 3, 4]} 
+      />
     </Layout>
   );
 };

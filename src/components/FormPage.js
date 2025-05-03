@@ -11,12 +11,24 @@ import FormInfo from "./Form/FormInfo";
 import SummaryModal from "./Form/SummaryModal"; // Import the new SummaryModal component
 import useFormStorage from "../hooks/useFormStorage";
 
-const FormPage = ({ csvData = [], preselectIndicio = false }) => {
+const FormPage = ({ 
+  csvData = [], 
+  preselectIndicio = false, 
+  formContext = "default", 
+  stepOrder = [1, 2, 3, 4] 
+}) => {
   const { register, handleSubmit, watch, control, reset, setValue, formState: { errors } } = useForm();
-  const { storedData, saveFormData, resetFormData, showModal, setShowModal, isLoading } =
-    useFormStorage("formData");
+  const { 
+    storedData, 
+    saveFormData, 
+    resetFormData, 
+    showModal, 
+    setShowModal, 
+    isLoading 
+  } = useFormStorage(`formData_${formContext}`);
 
-  const [step, setStep] = useState(1);
+  const [stepIndex, setStepIndex] = useState(0);
+  const currentStep = stepOrder[stepIndex];
   const [showSummaryModal, setShowSummaryModal] = useState(false); // State for the summary modal
 
   // Load saved data into the form on mount
@@ -32,26 +44,27 @@ const FormPage = ({ csvData = [], preselectIndicio = false }) => {
           setValue(key, storedData[key]); // Populate form fields with saved data
           console.log(`Set value for ${key}:`, storedData[key]);
         });
-        setStep(storedData.lastStep || 1); // Restore the last step
-        console.log("Restored step:", storedData.lastStep || 1);
+        const storedStepIndex = storedData.stepIndex || 0;
+        setStepIndex(storedStepIndex); // Restore the last step index
+        console.log("Restored step index:", storedStepIndex);
       }
     }
   }, [storedData, isLoading, setValue]);
 
   const nextStep = (data) => {
     console.log("Next step triggered with data:", data);
-    const updatedStep = step + 1;
-    saveFormData({ ...storedData, ...data, step: updatedStep }); // Save current step and data
-    setStep(updatedStep);
-    console.log("Step incremented to:", updatedStep);
+    const newIndex = stepIndex + 1;
+    saveFormData({ ...storedData, ...data, stepIndex: newIndex }); // Save current step index and data
+    setStepIndex(newIndex);
+    console.log("Step index incremented to:", newIndex);
   };
 
   const prevStep = () => {
     console.log("Previous step triggered");
-    const updatedStep = step - 1;
-    saveFormData({ ...storedData, step: updatedStep }); // Save current step
-    setStep(updatedStep);
-    console.log("Step decremented to:", updatedStep);
+    const newIndex = stepIndex - 1;
+    saveFormData({ ...storedData, stepIndex: newIndex }); // Save current step index
+    setStepIndex(newIndex);
+    console.log("Step index decremented to:", newIndex);
   };
 
   const onSubmit = (data) => {
@@ -67,9 +80,9 @@ const FormPage = ({ csvData = [], preselectIndicio = false }) => {
     // Save all data to localStorage before proceeding
     saveFormData({ ...storedData, ...data });
 
-    if (step < 4) {
-      console.log("Saving data and moving to next step:", { ...data, step: step + 1 });
-      saveFormData({ ...storedData, ...data, step: step + 1 }); // Merge new data with existing stored data
+    if (stepIndex < stepOrder.length - 1) {
+      console.log("Saving data and moving to next step:", { ...data, stepIndex: stepIndex + 1 });
+      saveFormData({ ...storedData, ...data, stepIndex: stepIndex + 1 }); // Merge new data with existing stored data
       nextStep(data);
     } else {
       if (data.consent) {
@@ -85,7 +98,7 @@ const FormPage = ({ csvData = [], preselectIndicio = false }) => {
     console.log("Final submission confirmed");
     resetFormData(); // Clear data after submission
     setShowSummaryModal(false); // Close the summary modal
-    setStep(5); // Move to step 5 (thank-you message)
+    setStepIndex(stepOrder.length); // Move to step 5 (thank-you message)
   };
 
   const handleCancelSummary = () => {
@@ -97,8 +110,8 @@ const FormPage = ({ csvData = [], preselectIndicio = false }) => {
     console.log("Starting new form");
     resetFormData(); // Clear localStorage and reset form data
     reset(); // Reset form fields
-    setStep(1); // Go back to step 1
-    console.log("Form reset and step set to 1");
+    setStepIndex(0); // Go back to step 1
+    console.log("Form reset and step index set to 0");
   };
 
   if (isLoading) {
@@ -119,7 +132,7 @@ const FormPage = ({ csvData = [], preselectIndicio = false }) => {
           resetFormData={() => {
             resetFormData(); // Clear localStorage
             reset(); // Clear form fields
-            setStep(1); // Reset to step 1
+            setStepIndex(0); // Reset to step 1
           }}
         />
       )}
@@ -130,21 +143,22 @@ const FormPage = ({ csvData = [], preselectIndicio = false }) => {
           onCancel={handleCancelSummary}
         />
       )}
-      {step === 5 ? (
+      <FormInfo data={storedData} />
+      {stepIndex === stepOrder.length ? (
         <Step5_ThankYou onStartNewForm={handleStartNewForm} />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormProgress currentStep={step} totalSteps={4} />
+          <FormProgress currentStep={stepIndex + 1} totalSteps={stepOrder.length} />
 
-          {step === 1 && (
+          {currentStep === 1 && (
             <Step1_BasicInfo
               register={register}
               control={control}
               errors={errors}
             />
           )}
-          {step === 2 && <Step2_Disappearance register={register} watch={watch} errors={errors} />}
-          {step === 3 && (
+          {currentStep === 2 && <Step2_Disappearance register={register} watch={watch} errors={errors} />}
+          {currentStep === 3 && (
             <Step3_Clothing
               register={register}
               setValue={setValue} // Pass setValue to Step3_Clothing
@@ -154,15 +168,14 @@ const FormPage = ({ csvData = [], preselectIndicio = false }) => {
               noIndicioSelected={!preselectIndicio} // Pass noIndicioSelected based on preselectIndicio
             />
           )}
-          {step === 4 && <Step4_Consent register={register} watch={watch} errors={errors} />}
+          {currentStep === 4 && <Step4_Consent register={register} watch={watch} errors={errors} />}
 
           <div>
-            {step > 1 && <button type="button" onClick={prevStep}>Anterior</button>}
-            <button type="submit">{step === 4 ? "Enviar" : "Siguiente"}</button>
+            {stepIndex > 0 && <button type="button" onClick={prevStep}>Anterior</button>}
+            <button type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
           </div>
         </form>
       )}
-      <FormInfo data={storedData} />
     </>
   );
 };
