@@ -8,6 +8,10 @@ import { Helmet } from "react-helmet";
 import { useLocation } from "@reach/router";
 import useFormStorage from "../hooks/useFormStorage";
 import ReactPageScroller from "react-page-scroller";
+import "../components/index.module.css"; // Asegúrate de que este archivo esté correctamente importado
+import TestScroller from "./testScroller"; // Importa el componente de prueba
+import SectionNav from "../utils/SectionNav"; // Import the reusable component
+import Header from "../components/header"; // Ensure Header is imported
 
 const hashToPageIndex = {
   introduccion: 0,
@@ -21,6 +25,7 @@ const IndexPage = () => {
   const preselectIndicio = location.pathname.startsWith("/indicio/");
   const { logAllForms } = useFormStorage();
   const [currentPage, setCurrentPage] = React.useState(null); // Start with null to delay rendering
+  const sectionNames = ["Introducción", "Catálogo", "Formulario"]; // Section names
 
   React.useEffect(() => {
     initGTM();
@@ -65,14 +70,21 @@ const IndexPage = () => {
   }
 
   return (
-    <Layout pageType="index">
+    <Layout
+      pageType="index"
+      currentPage={currentPage} // Pass currentPage
+      setCurrentPage={setCurrentPage} // Pass setCurrentPage
+      sectionNames={sectionNames} // Pass sectionNames
+    >
       <Helmet>
         <title>Las Prendas Hablan - Tejer.RED | Inicio</title>
         <meta name="description" content="Bienvenido a Las Prendas Hablan - Tejer.RED, una plataforma para explorar indicios y más." />
       </Helmet>
+
       <ReactPageScroller
         pageOnChange={handlePageChange}
         customPageNumber={currentPage}
+        navigation // Enable navigation bullets
       >
         {/* 1. Presentación y descripción del proyecto */}
         <section id="introduccion" className="full-page-section">
@@ -114,6 +126,18 @@ const IndexPage = () => {
           />
         </section>
       </ReactPageScroller>
+
+      {/* Use SectionNav */}
+      <SectionNav
+        currentPage={currentPage}
+        sectionNames={sectionNames}
+        onNavigate={setCurrentPage}
+      />
+
+      {/* Agrega un enlace temporal para acceder a la página de prueba */}
+      <section>
+        <a href="/testScroller">Ir a TestScroller</a>
+      </section>
     </Layout>
   );
 };

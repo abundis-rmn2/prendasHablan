@@ -11,7 +11,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import Header from "./header"
 import "./layout.css"
 
-const Layout = ({ children, pageType }) => {
+const Layout = ({ children, pageType, currentPage, setCurrentPage, sectionNames }) => { // Accept props
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -20,16 +20,20 @@ const Layout = ({ children, pageType }) => {
         }
       }
     }
-  `)
+  `);
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
+      <Header
+        siteTitle={data.site.siteMetadata?.title || `Title`}
+        currentPage={currentPage} // Pass currentPage
+        setCurrentPage={setCurrentPage} // Pass setCurrentPage
+        sectionNames={sectionNames} // Pass sectionNames
+      />
       <div 
         className={`container page-${pageType}`} // Add dynamic className
         style={{
           margin: `0 auto`,
-
         }}
       >
         <main>{children}</main>
@@ -53,7 +57,7 @@ const Layout = ({ children, pageType }) => {
         </footer>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

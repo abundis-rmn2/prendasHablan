@@ -249,3 +249,10 @@ pre tt:after {
   padding: 0;
   box-sizing: border-box;
 }
+
+header, footer {
+  width: 100%;
+  padding: var(--size-gutter);
+  background-color: #f0f0f0; /* Light background for header and footer */
+  position: sticky;
+}

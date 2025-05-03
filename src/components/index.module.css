@@ -143,3 +143,24 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.react-page-scroller-navigation {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.react-page-scroller-navigation .dot {
+  width: 12px;
+  height: 12px;
+  margin: 8px 0;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.react-page-scroller-navigation .dot.active {
+  background-color: #000;
+}
