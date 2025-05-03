@@ -41,7 +41,6 @@ const IndexPage = () => {
       <p>Cualquier duda por favor contáctenos; tengan certeza que sus datos personales serán cuidados y resguardados. Gracias de antemano.</p>
       </div>
       { /* <IndicioList csvData={csvData} /> */ }
-      <IndicioList csvData={csvData} />
       <FormPage 
         csvData={csvData} 
         preselectIndicio={preselectIndicio} 

@@ -1,7 +1,7 @@
 import React from "react";
 import * as styles from "./FormStyles.module.css"; // Import shared styles
 
-const Modal = ({ show, onContinue, onStartNew, resetFormData }) => {
+const Modal = ({ show, onContinue, onStartNew, resetFormData, setShowModal }) => {
   if (!show) return null;
 
   console.log("Modal displayed");
@@ -26,6 +26,7 @@ const Modal = ({ show, onContinue, onStartNew, resetFormData }) => {
             onClick={() => {
               console.log("Start new button clicked");
               onStartNew();
+              setShowModal(false); // Hide the modal
             }}
           >
             Iniciar de Nuevo
@@ -35,6 +36,7 @@ const Modal = ({ show, onContinue, onStartNew, resetFormData }) => {
             onClick={() => {
               console.log("Delete data button clicked");
               resetFormData(); // Properly clear localStorage
+              setShowModal(false); // Hide the modal
             }}
           >
             Borrar Datos

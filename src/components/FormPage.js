@@ -131,6 +131,7 @@ const FormPage = ({
             reset();
             setStepIndex(0);
           }}
+          setShowModal={setShowModal} // Pass setShowModal to Modal
         />
       )}
       {showSummaryModal && (
