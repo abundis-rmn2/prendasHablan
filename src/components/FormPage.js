@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import Step1_BasicInfo from "./Form/Step1_BasicInfo";
-import Step2_Disappearance from "./Form/Step2_Disappearance";
-import Step3_Clothing from "./Form/Step3_Clothing";
-import Step4_Consent from "./Form/Step4_Consent";
-import Step5_ThankYou from "./Form/Step5_ThankYou"; // Import the new Step5_ThankYou component
+import Step1BasicInfo from "./Form/Step1_BasicInfo"; // Fix PascalCase
+import Step2Disappearance from "./Form/Step2_Disappearance"; // Fix PascalCase
+import Step3Clothing from "./Form/Step3_Clothing"; // Fix PascalCase
+import Step4Consent from "./Form/Step4_Consent"; // Fix PascalCase
+import Step5ThankYou from "./Form/Step5_ThankYou"; // Fix PascalCase
 import FormProgress from "./Form/FormProgress";
 import Modal from "./Form/Modal";
 import FormInfo from "./Form/FormInfo";
-import SummaryModal from "./Form/SummaryModal"; // Import the new SummaryModal component
+import SummaryModal from "./Form/SummaryModal";
 import useFormStorage from "../hooks/useFormStorage";
 
 const FormPage = ({ 
@@ -29,32 +29,31 @@ const FormPage = ({
 
   const [stepIndex, setStepIndex] = useState(0);
   const currentStep = stepOrder[stepIndex];
-  const [showSummaryModal, setShowSummaryModal] = useState(false); // State for the summary modal
+  const [showSummaryModal, setShowSummaryModal] = useState(false);
 
-  // Load saved data into the form on mount
   useEffect(() => {
     console.log("FormPage mounted");
     if (storedData && !isLoading) {
       console.log("Stored data found:", storedData);
       if (Object.keys(storedData).length === 0) {
-        reset(); // Ensure form fields are cleared if storedData is empty
+        reset();
         console.log("Form fields cleared due to empty stored data");
       } else {
         Object.keys(storedData).forEach((key) => {
-          setValue(key, storedData[key]); // Populate form fields with saved data
+          setValue(key, storedData[key]);
           console.log(`Set value for ${key}:`, storedData[key]);
         });
         const storedStepIndex = storedData.stepIndex || 0;
-        setStepIndex(storedStepIndex); // Restore the last step index
+        setStepIndex(storedStepIndex);
         console.log("Restored step index:", storedStepIndex);
       }
     }
-  }, [storedData, isLoading, setValue]);
+  }, [storedData, isLoading, setValue, reset]); // Add 'reset' to dependency array
 
   const nextStep = (data) => {
     console.log("Next step triggered with data:", data);
     const newIndex = stepIndex + 1;
-    saveFormData({ ...storedData, ...data, stepIndex: newIndex }); // Save current step index and data
+    saveFormData({ ...storedData, ...data, stepIndex: newIndex });
     setStepIndex(newIndex);
     console.log("Step index incremented to:", newIndex);
   };
@@ -62,7 +61,7 @@ const FormPage = ({
   const prevStep = () => {
     console.log("Previous step triggered");
     const newIndex = stepIndex - 1;
-    saveFormData({ ...storedData, stepIndex: newIndex }); // Save current step index
+    saveFormData({ ...storedData, stepIndex: newIndex });
     setStepIndex(newIndex);
     console.log("Step index decremented to:", newIndex);
   };
@@ -70,24 +69,22 @@ const FormPage = ({
   const onSubmit = (data) => {
     console.log("Form submitted with data:", data);
 
-    // Ensure consent is explicitly set to true if checked
     if (data.consent === true || data.consent === "true") {
       data.consent = true;
     } else {
       data.consent = false;
     }
 
-    // Save all data to localStorage before proceeding
     saveFormData({ ...storedData, ...data });
 
     if (stepIndex < stepOrder.length - 1) {
       console.log("Saving data and moving to next step:", { ...data, stepIndex: stepIndex + 1 });
-      saveFormData({ ...storedData, ...data, stepIndex: stepIndex + 1 }); // Merge new data with existing stored data
+      saveFormData({ ...storedData, ...data, stepIndex: stepIndex + 1 });
       nextStep(data);
     } else {
       if (data.consent) {
         console.log("Final step reached, showing summary modal");
-        setShowSummaryModal(true); // Show the summary modal only if consent is true
+        setShowSummaryModal(true);
       } else {
         alert("Debes aceptar el consentimiento para enviar el formulario.");
       }
@@ -96,27 +93,27 @@ const FormPage = ({
 
   const handleFinalSubmit = () => {
     console.log("Final submission confirmed");
-    resetFormData(); // Clear data after submission
-    setShowSummaryModal(false); // Close the summary modal
-    setStepIndex(stepOrder.length); // Move to step 5 (thank-you message)
+    resetFormData();
+    setShowSummaryModal(false);
+    setStepIndex(stepOrder.length);
   };
 
   const handleCancelSummary = () => {
     console.log("Summary modal canceled");
-    setShowSummaryModal(false); // Close the summary modal
+    setShowSummaryModal(false);
   };
 
   const handleStartNewForm = () => {
     console.log("Starting new form");
-    resetFormData(); // Clear localStorage and reset form data
-    reset(); // Reset form fields
-    setStepIndex(0); // Go back to step 1
+    resetFormData();
+    reset();
+    setStepIndex(0);
     console.log("Form reset and step index set to 0");
   };
 
   if (isLoading) {
     console.log("Loading state active");
-    return <p>Cargando...</p>; // Show loading state while checking localStorage
+    return <p>Cargando...</p>;
   }
 
   return (
@@ -127,12 +124,12 @@ const FormPage = ({
           onContinue={() => {
             console.log("Continuing with saved data");
             setShowModal(false);
-          }} // Close modal and continue with saved data
-          onStartNew={handleStartNewForm} // Start a new form
+          }}
+          onStartNew={handleStartNewForm}
           resetFormData={() => {
-            resetFormData(); // Clear localStorage
-            reset(); // Clear form fields
-            setStepIndex(0); // Reset to step 1
+            resetFormData();
+            reset();
+            setStepIndex(0);
           }}
         />
       )}
@@ -145,31 +142,41 @@ const FormPage = ({
       )}
       <FormInfo data={storedData} />
       {stepIndex === stepOrder.length ? (
-        <Step5_ThankYou onStartNewForm={handleStartNewForm} />
+        <Step5ThankYou onStartNewForm={handleStartNewForm} />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormProgress currentStep={stepIndex + 1} totalSteps={stepOrder.length} />
-
           {currentStep === 1 && (
-            <Step1_BasicInfo
+            <Step1BasicInfo
               register={register}
               control={control}
               errors={errors}
             />
           )}
-          {currentStep === 2 && <Step2_Disappearance register={register} watch={watch} errors={errors} />}
-          {currentStep === 3 && (
-            <Step3_Clothing
+          {currentStep === 2 && (
+            <Step2Disappearance
               register={register}
-              setValue={setValue} // Pass setValue to Step3_Clothing
+              watch={watch}
+              errors={errors}
+            />
+          )}
+          {currentStep === 3 && (
+            <Step3Clothing
+              register={register}
+              setValue={setValue}
               watch={watch}
               errors={errors}
               csvData={csvData}
-              noIndicioSelected={!preselectIndicio} // Pass noIndicioSelected based on preselectIndicio
+              noIndicioSelected={!preselectIndicio}
             />
           )}
-          {currentStep === 4 && <Step4_Consent register={register} watch={watch} errors={errors} />}
-
+          {currentStep === 4 && (
+            <Step4Consent
+              register={register}
+              watch={watch}
+              errors={errors}
+            />
+          )}
           <div>
             {stepIndex > 0 && <button type="button" onClick={prevStep}>Anterior</button>}
             <button type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>

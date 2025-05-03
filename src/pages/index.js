@@ -19,7 +19,7 @@ const IndexPage = () => {
     initGTM();
     trackEvent("page_view", "Index", "Index Page Loaded", 1);
     logAllForms(); // Log all saved forms in localStorage
-  }, []);
+  }, [logAllForms]); // Add 'logAllForms' to dependency array
 
   return (
     <Layout>

@@ -137,3 +137,9 @@
 .formButton:hover {
   background-color: #005fa3;
 }
+
+.linkText {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
