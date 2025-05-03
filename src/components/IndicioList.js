@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "gatsby";
-import * as styles from "./index.module.css";
+import * as styles from "./index.module.css"; // Ensure 'linkText' is exported from this file
 
 const IndicioList = ({ csvData }) => {
   return (

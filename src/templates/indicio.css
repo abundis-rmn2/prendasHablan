@@ -1,0 +1,30 @@
+.image-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  overflow: hidden;
+}
+
+.thumbnail-container {
+  flex: 0 0 auto; /* Thumbnail takes its natural size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbnail {
+  max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  cursor: zoom-in;
+  margin: 0;
+  height: fit-content; /* Adjust height dynamically */
+}
+
+.magnified-image {
+  flex: 1; /* Magnified image takes the remaining space */
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid #ccc;
+}

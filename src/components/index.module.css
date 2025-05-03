@@ -48,6 +48,21 @@
   text-align: center;
 }
 
+.textJustify {
+  text-align: justify;
+}
+
+.textJustify > p {
+  max-width: none;
+  font-size: 1.3em;
+}
+
+.textJustify::after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+
 .intro {
   max-width: none;
   line-height: var(--line-height-loose);
@@ -121,4 +136,10 @@
 
 .formButton:hover {
   background-color: #005fa3;
+}
+
+.linkText {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
 }
