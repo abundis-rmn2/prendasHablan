@@ -9,17 +9,60 @@ import { useLocation } from "@reach/router";
 import useFormStorage from "../hooks/useFormStorage";
 import ReactPageScroller from "react-page-scroller";
 
+const hashToPageIndex = {
+  introduccion: 0,
+  catalogo: 1,
+  formulario: 2,
+};
+
 const IndexPage = () => {
   const csvData = useLoadCsvData();
   const location = useLocation();
   const preselectIndicio = location.pathname.startsWith("/indicio/");
   const { logAllForms } = useFormStorage();
+  const [currentPage, setCurrentPage] = React.useState(null); // Start with null to delay rendering
 
   React.useEffect(() => {
     initGTM();
     trackEvent("page_view", "Index", "Index Page Loaded", 1);
     logAllForms();
+
+    // Set initial page based on hash
+    const initialHash = window.location.hash.replace("#", "");
+    if (hashToPageIndex[initialHash] !== undefined) {
+      setCurrentPage(hashToPageIndex[initialHash]);
+    } else {
+      setCurrentPage(0); // Default to the first section if no valid hash is present
+    }
+
+    // Listen for hash changes
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (hashToPageIndex[hash] !== undefined) {
+        setCurrentPage(hashToPageIndex[hash]);
+      }
+    };
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
   }, [logAllForms]);
+
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex);
+    const hash = Object.keys(hashToPageIndex).find(
+      (key) => hashToPageIndex[key] === pageIndex
+    );
+    if (hash) {
+      window.history.replaceState(null, "", `#${hash}`);
+    }
+  };
+
+  // Delay rendering ReactPageScroller until currentPage is set
+  if (currentPage === null) {
+    return null; // Render nothing until the initial page is determined
+  }
 
   return (
     <Layout pageType="index">
@@ -27,9 +70,12 @@ const IndexPage = () => {
         <title>Las Prendas Hablan - Tejer.RED | Inicio</title>
         <meta name="description" content="Bienvenido a Las Prendas Hablan - Tejer.RED, una plataforma para explorar indicios y más." />
       </Helmet>
-      <ReactPageScroller>
+      <ReactPageScroller
+        pageOnChange={handlePageChange}
+        customPageNumber={currentPage}
+      >
         {/* 1. Presentación y descripción del proyecto */}
-        <section className="full-page-section">
+        <section id="introduccion" className="full-page-section">
           <h1>Las Prendas Hablan</h1>
           <div className={styles.textJustify}>
             <p>Desde "Las Prendas Hablan" damos un abrazo solidario a las familias y colectivos de búsqueda de personas desaparecidas de todo el país. Lo que buscamos con este proyecto impulsado por los equipos de <a href="https://animalpolitico.com">Animal Político</a>, <a href="https://adondevanlosdesaparecidos.org/">A dónde van los desaparecidos</a> y <a href="https://www.zonadocs.mx/">ZonaDocs</a>, con el apoyo de <a href="https://tejer.red">Tejer Red</a>, es contribuir a conocer la verdad sobre lo que ocurrió en el rancho Izaguirre en Teuchitlán, Jalisco, y abonar a la búsqueda de verdad.</p>
@@ -43,7 +89,7 @@ const IndexPage = () => {
         </section>
 
         {/* 2. Iframe embed */}
-        <section className="full-page-section" style={{ display: "flex", justifyContent: "center", margin: "4rem 0" }}>
+        <section id="catalogo" className="full-page-section" style={{ display: "flex", justifyContent: "center", margin: "4rem 0" }}>
           <iframe
             src="https://rancho-izaguirre.abundis.com.mx"
             style={{
@@ -59,7 +105,7 @@ const IndexPage = () => {
         </section>
 
         {/* 3. Formulario de contacto */}
-        <section className="full-page-section">
+        <section id="formulario" className="full-page-section">
           <FormPage 
             csvData={csvData} 
             preselectIndicio={preselectIndicio} 
