@@ -222,3 +222,30 @@ pre tt:before,
 pre tt:after {
   content: none;
 }
+
+.page-indicio {
+  max-width: var(--size-content);
+  padding: var(--size-gutter);
+  background-color: #f9f9f9; /* Light background for indicio pages */
+}
+
+.page-index {
+  width: 100vw;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff; /* White background for index page */
+}
+
+.page-index .full-page-section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0; /* Remove offsets */
+  padding: 0;
+  box-sizing: border-box;
+}
