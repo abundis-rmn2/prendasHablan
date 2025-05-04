@@ -1,35 +1,35 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Link } from "gatsby"; // Import Gatsby's Link component
-import "../components/index.module.css"; // Ensure styles are imported
+import "../styles/header.css"; // Import styles
+
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+};
 
 const SectionNavMenu = ({ currentPage, sectionNames = [], onNavigate }) => { // Default sectionNames to an empty array
+  const handleNavigate = useCallback(
+    debounce((pageIndex) => {
+      onNavigate(pageIndex); // Trigger navigation
+    }, 300), // 300ms debounce delay
+    [onNavigate]
+  );
+
   return (
-    <nav
-      style={{
-        display: "flex",
-        gap: "1rem",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "1rem 0",
-        backgroundColor: "#f9f9f9",
-        borderBottom: "1px solid #ccc",
-      }}
-    >
+    <nav className="section-nav-menu">
       {sectionNames.map((name, pageIndex) => (
         <Link
           key={pageIndex}
           to={`#${name.toLowerCase().replace(/\s+/g, "-")}`} // Generate hash links
-          style={{
-            textDecoration: "none",
-            color: currentPage === pageIndex ? "#000" : "#555",
-            fontWeight: currentPage === pageIndex ? "bold" : "normal",
-            padding: "0.5rem 1rem",
-            borderRadius: "4px",
-            backgroundColor: currentPage === pageIndex ? "#e0e0e0" : "transparent",
-          }}
+          className={`section-nav-link ${
+            currentPage === pageIndex ? "active" : ""
+          }`}
           onClick={(e) => {
             e.preventDefault(); // Prevent default link behavior
-            onNavigate(pageIndex); // Trigger navigation
+            handleNavigate(pageIndex); // Use debounced navigation
           }}
         >
           {name}

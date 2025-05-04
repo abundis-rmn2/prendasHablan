@@ -133,11 +133,6 @@ const IndexPage = () => {
         sectionNames={sectionNames}
         onNavigate={setCurrentPage}
       />
-
-      {/* Agrega un enlace temporal para acceder a la página de prueba */}
-      <section>
-        <a href="/testScroller">Ir a TestScroller</a>
-      </section>
     </Layout>
   );
 };
