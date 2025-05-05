@@ -26,12 +26,12 @@ const FormProgress = ({ currentStep, totalSteps, stepOrder, formContext }) => {
   console.log("Form context:", formContext); // Optional: Log formContext for debugging
 
   return (
-    <div className="percentage-bar" style={{ position: "relative", width: "100%" }}>
+    <div className="percentage-bar" style={{ position: "relative", width: "100%", marginBottom: "4rem" }}>
       {/* Percentage Bar */}
       <div className="percentage-bar-inner"
         style={{
           position: "absolute",
-          top: "calc(50% - 20px)",
+          top: "calc(50% - 0px)",
           borderRadius: "64px",
           left: "0px",
           right: "0px",
@@ -68,30 +68,47 @@ const FormProgress = ({ currentStep, totalSteps, stepOrder, formContext }) => {
       >
         {Array.from({ length: totalSteps }, (_, index) => {
           const step = index + 1;
-          return (
-            <div style={{ margin: 0, padding: 0, backgroundColor: "#fff", borderRadius: "50%", height: 64 }} key={step}>
+            return (
+            <div style={{ margin: 0, padding: 0, backgroundColor: "#fff", borderRadius: "50%", height: 64, position: "relative" }} key={step}>
               <img
-                key={step}
-                src={getIconPath(step)}
-                alt={getIconLabel(step)}
-                style={{
-                  width: "64px",
-                  height: "64px",
-                  margin: "0 auto",
-                  padding: "0",
-                  opacity: step <= currentStep ? 1 : 0.5,
-                  transition: "opacity 0.3s",
-                }}
+              key={step}
+              src={getIconPath(step)}
+              alt={getIconLabel(step)}
+              style={{
+                width: "64px",
+                height: "64px",
+                margin: "0 auto",
+                padding: "0",
+                opacity: step <= currentStep ? 1 : 0.5,
+                transition: "opacity 0.3s",
+              }}
               />
+              <span
+              style={{
+                position: "absolute",
+                top: "72px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                fontSize: "0.8rem",
+                textAlign: "center",
+                whiteSpace: "pre-wrap",
+                width: "7rem",
+                fontWeight: 700,
+                color: "#518e9b"
+              }}
+              >
+              {getIconLabel(step)}
+              </span>
             </div>
-          );
+            );
         })}
       </div>
 
-      {/* Step Text */}
+      {/* Step T
       <p style={{ marginTop: "16px", textAlign: "center" }}>
         Paso {currentStep} de {totalSteps}
       </p>
+      ext */}
     </div>
   );
 };
