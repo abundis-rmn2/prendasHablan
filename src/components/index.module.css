@@ -46,6 +46,7 @@
 
 .textCenter {
   text-align: center;
+  font-family: var(--font-sans);
 }
 
 .textJustify {
@@ -55,6 +56,7 @@
 .textJustify > p {
   max-width: none;
   font-size: 1.3em;
+  font-family: var(--font-sans);
 }
 
 .textJustify::after {
@@ -83,6 +85,7 @@
   margin-bottom: 1rem;
   text-align: center;
   color: #333;
+  font-family: var(--font-sans);
 }
 
 .formGroup {

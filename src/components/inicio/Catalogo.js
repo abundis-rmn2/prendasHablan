@@ -9,7 +9,6 @@ const Catalogo = () => (
     style={{
       display: "flex",
       justifyContent: "center",
-      margin: "4rem 0",
       backgroundImage: `url(${bgComp})`,
       backgroundSize: "cover",
       backgroundPosition: "center",

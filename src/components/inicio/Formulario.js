@@ -2,7 +2,7 @@ import React from "react";
 import FormPage from "../../components/FormPage";
 
 const Formulario = ({ csvData, preselectIndicio }) => (
-  <section id="formulario" className="full-page-section">
+  <section id="formulario" className="full-page-section" style={{ position: "relative" }}>
     <FormPage
       csvData={csvData}
       preselectIndicio={preselectIndicio}

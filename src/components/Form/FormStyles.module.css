@@ -77,7 +77,7 @@ textarea.fullWidthInput {
 }
 
 .modalOverlay {
-  position: fixed;
+  position: abhsolute;
   top: 0;
   left: 0;
   width: 100%;
