@@ -1,0 +1,83 @@
+.introduccion-section {
+  background: #ffffff;
+}
+
+.introduccion-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.introduccion-left {
+    width: 50%;
+    background-size: cover;
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+}
+
+.introduccion-left p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #333;
+  margin: 0;
+}
+
+.introduccion-logo {
+  max-width: 60%;
+  max-height: 60%;
+  width:100%;;
+}
+
+.introduccion-right {
+  width: 50%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* Center-align text */
+  margin:2rem;
+  flex-direction: column; /* Ensure vertical alignment for text */
+}
+
+.introduccion-decorative {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 5%);
+    max-width: 200px;
+    max-height: 460px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.formulario-button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 10px 20px;
+  width: 5rem;
+  min-width: 20rem;
+  background-color: rgb(179, 0, 0);
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.formulario-button:hover {
+  background-color: darkred;
+}
+
+.introduccion-right p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #333;
+  text-align: justify;
+}

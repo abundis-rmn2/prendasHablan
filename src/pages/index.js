@@ -80,7 +80,9 @@ const IndexPage = () => {
       <ReactPageScroller
         pageOnChange={handlePageChange}
         customPageNumber={currentPage}
-        navigation
+        containerHeight={window.innerHeight}
+        containerWidth={window.innerWidth}
+        renderAllPagesOnFirstRender={true}
       >
         {sections.map((section, index) => {
           const SectionComponent = section.component;
@@ -95,12 +97,6 @@ const IndexPage = () => {
           );
         })}
       </ReactPageScroller>
-
-      <SectionNav
-        currentPage={currentPage}
-        sectionNames={sections.map((section) => section.name)}
-        onNavigate={setCurrentPage}
-      />
     </Layout>
   );
 };
