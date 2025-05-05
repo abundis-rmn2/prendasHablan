@@ -141,12 +141,17 @@ const FormPage = ({
           onCancel={handleCancelSummary}
         />
       )}
-      <FormInfo data={storedData} />
+      {formContext !== "default" && <FormInfo data={storedData} />}
       {stepIndex === stepOrder.length ? (
         <Step5ThankYou onStartNewForm={handleStartNewForm} />
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormProgress currentStep={stepIndex + 1} totalSteps={stepOrder.length} />
+        <form style={{ maxWidth: "1024px", margin: "0 auto", width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+          <FormProgress 
+            currentStep={stepIndex + 1} 
+            totalSteps={stepOrder.length} 
+            stepOrder={stepOrder} 
+            formContext={formContext} // Pass formContext to FormProgress
+          />
           {currentStep === 1 && (
             <Step1BasicInfo
               register={register}

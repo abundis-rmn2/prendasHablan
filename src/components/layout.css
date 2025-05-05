@@ -249,6 +249,7 @@ pre tt:after {
   margin: 0; /* Remove offsets */
   padding: 0;
   box-sizing: border-box;
+  position: relative;
 }
 
 header, footer {

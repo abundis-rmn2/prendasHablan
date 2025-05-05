@@ -17,10 +17,11 @@ const Catalogo = () => (
     <iframe
       src="https://rancho-izaguirre.abundis.com.mx"
       style={{
-        width: "50%",
+        width: "100%",
+        maxWidth: "1024px",
         height: "75vh",
-        border: "1px solid #ccc",
-        borderRadius: "8px",
+        borderTop: "1rem solid #518e9b",
+        borderBottom: "1rem solid #518e9b",
         overflow: "auto",
       }}
       title="Rancho Izaguirre"

@@ -54,6 +54,7 @@ const Layout = ({ children, pageType, currentPage, setCurrentPage, sectionNames 
     flexDirection: 'row',
     alignItems: 'center',
     flexShrink: 0,
+    posittion: 'absolute',
   }}
 >
   <span>{new Date().getFullYear()} <b>Las Prendas Hablan</b> es un proyecto conjunto entre:</span>
