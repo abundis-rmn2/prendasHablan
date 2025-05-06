@@ -111,6 +111,13 @@ const FormPage = ({
     console.log("Form reset and step index set to 0");
   };
 
+  // Calculate dynamic margins
+  const footerHeight = getComputedStyle(document.documentElement).getPropertyValue('--footer-height') || '4rem';
+  const headerHeight = getComputedStyle(document.documentElement).getPropertyValue('--header-height') || '4rem';
+  const marginBottom = `calc(${footerHeight} - 5px)`;
+  const marginTop = `calc(${headerHeight} - 15px)`;
+  console.log("Calculated margins:", { marginBottom, marginTop });
+
   if (isLoading) {
     console.log("Loading state active");
     return <p>Cargando...</p>;
@@ -133,62 +140,137 @@ const FormPage = ({
           }}
           setShowModal={setShowModal} // Pass setShowModal to Modal
         />
-      )}
-      {showSummaryModal && (
+            )}
+            {showSummaryModal && (
         <SummaryModal
           data={storedData}
           onConfirm={handleFinalSubmit}
           onCancel={handleCancelSummary}
         />
-      )}
-      {formContext !== "default" && <FormInfo data={storedData} />}
-      {stepIndex === stepOrder.length ? (
-        <Step5ThankYou onStartNewForm={handleStartNewForm} />
-      ) : (
-        <form style={{ maxWidth: "1024px", margin: "0 auto", width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-          <FormProgress 
+            )}
+            <div style={{ display: "flex", maxWidth: "1280px", margin: "0 auto", width: "100%", height: "100%" }}>
+        <div className="infoPrends" style={{ 
+          width: "30%", 
+          background: "lightgray",
+          display: "flex",
+          alignItems: "flex-end",
+          alignContent: "stretch", 
+          justifyContent: "center",
+          marginBottom: marginBottom, // Use calculated marginBottom
+          marginTop: marginTop // Use calculated marginTop
+        }}>
+          <h1>Texto Prueba</h1>
+        </div>
+        <div className="form" style={{ 
+          width: "50%",
+          overflowY: "overlay",
+          marginBottom: marginBottom,
+          marginTop: marginTop,
+          display: "flex",
+          flexDirection: "row",
+          alignContent: "center", 
+          alignItems: "center",
+          justifyContent: "center",
+          overflowX: "hidden",
+          padding: "1rem"
+        }}>
+          {stepIndex === stepOrder.length ? (
+            <Step5ThankYou onStartNewForm={handleStartNewForm} />
+          ) : (
+            <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+              <FormProgress 
             currentStep={stepIndex + 1} 
             totalSteps={stepOrder.length} 
             stepOrder={stepOrder} 
-            formContext={formContext} // Pass formContext to FormProgress
-          />
-          {currentStep === 1 && (
-            <Step1BasicInfo
-              register={register}
-              control={control}
-              errors={errors}
-            />
+            formContext={formContext} // Pass formContext to FormProgress</div>
+              />
+              {currentStep === 1 && (
+                <Step1BasicInfo
+                  register={register}
+                  control={control}
+                  errors={errors}
+                />
+              )}
+              {currentStep === 2 && (
+                <Step2Disappearance
+                  register={register}
+                  watch={watch}
+                  errors={errors}
+                />
+              )}
+              {currentStep === 3 && (
+                <Step3Clothing
+                  register={register}
+                  setValue={setValue}
+                  watch={watch}
+                  errors={errors}
+                  csvData={csvData}
+                  noIndicioSelected={!preselectIndicio}
+                />
+              )}
+              {currentStep === 4 && (
+                <Step4Consent
+                  register={register}
+                  watch={watch}
+                  errors={errors}
+                />
+              )}
+              <div>
+                {stepIndex > 0 && <button type="button" onClick={prevStep}>Anterior</button>}
+                <button type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
+              </div>
+            </form>
           )}
-          {currentStep === 2 && (
-            <Step2Disappearance
-              register={register}
-              watch={watch}
-              errors={errors}
+        </div>
+        <div className="formInfo" style={{ 
+          width: "20%",
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "wrap",
+          alignContent: "center",
+          justifyContent: "center",
+          alignItems: "stretch"
+        }}>
+          {
+            <FormInfo 
+              data={storedData} 
+              keyTexts={{
+                name: "Nombre reportante",
+                location: "Ubicación reportante",
+                relationship: "Relación con la persona desaparecida",
+                age: "Edad de la persona desaparecida",
+                last_seen: "Última vez visto",
+                has_job_offer: "Relación a oferta de trabajo",
+                job_offer_type: "Tipo de oferta de trabajo",
+                contact_medium: "Medio de contacto",
+                recognized_clothing: "Indicio reconocido",
+                clothing_owner: "Dueño de la ropa",
+                recognition_reason: "Razón de reconocimiento",
+                contacted_authorities: "Autoridades contactadas",
+                willing_to_share: "Dispuesto a compartir",
+                contact_info: "Información de contacto",
+                authority_details: "Detalles de la autoridad"
+              }} 
+              keysToShow={[
+                "name", 
+                "location", 
+                "relationship", 
+                "age", 
+                "last_seen", 
+                "has_job_offer", 
+                "job_offer_type", 
+                "contact_medium", 
+                "recognized_clothing", 
+                "clothing_owner", 
+                "recognition_reason", 
+                "contacted_authorities", 
+                "willing_to_share", 
+                "contact_info"
+              ]}
             />
-          )}
-          {currentStep === 3 && (
-            <Step3Clothing
-              register={register}
-              setValue={setValue}
-              watch={watch}
-              errors={errors}
-              csvData={csvData}
-              noIndicioSelected={!preselectIndicio}
-            />
-          )}
-          {currentStep === 4 && (
-            <Step4Consent
-              register={register}
-              watch={watch}
-              errors={errors}
-            />
-          )}
-          <div>
-            {stepIndex > 0 && <button type="button" onClick={prevStep}>Anterior</button>}
-            <button type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
-          </div>
-        </form>
-      )}
+          }
+        </div>
+      </div>
     </>
   );
 };

@@ -16,7 +16,7 @@
   /* Add styles for the header title */
   font-size: 1.5rem;
   font-weight: bold;
-  color: #00b646;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -32,7 +32,7 @@
 .header-top-container .section-nav-link {
   /* Add styles for the navigation links */
   text-decoration: none;
-  color: #555;
+  color: #fff;
   font-weight: normal;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -44,7 +44,7 @@
   /* Add styles for the active navigation link */
   color: #000;
   font-weight: bold;
-  background-color: #e0e0e0;
+  background-color: #ffffff;
 }
 
 .header-container {
@@ -53,4 +53,16 @@
   left: 0;
   width: 100%;
   z-index: 10;
+  height: 3rem;
+  padding: 0.5rem 3rem;
+  background: black;
+  border: none;
+}
+
+.header-top-container {
+  display: flex
+;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
 }

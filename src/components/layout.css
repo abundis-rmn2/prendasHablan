@@ -253,9 +253,19 @@ pre tt:after {
   position: relative;
 }
 
-header, footer {
+ footer {
   width: 100%;
   padding: var(--size-gutter);
-  background-color: #f0f0f0; /* Light background for header and footer */
+  background: #000; /* Light background for header and footer */
   position: sticky;
+  color: #fff
+}
+
+footer a {
+  background: #518e9b;
+  padding: 0.2rem 0.8rem;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0.3rem;
 }
