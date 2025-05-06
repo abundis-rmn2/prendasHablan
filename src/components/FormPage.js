@@ -20,6 +20,7 @@ const FormPage = ({
   formContext = "default", 
   stepOrder = [1, 2, 3, 4] 
 }) => {
+  const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const { register, handleSubmit, watch, control, reset, setValue, formState: { errors } } = useForm();
   const { 
     storedData, 
@@ -116,8 +117,12 @@ const FormPage = ({
   };
 
   // Calculate dynamic margins
-  const footerHeight = getComputedStyle(document.documentElement).getPropertyValue('--footer-height') || '4rem';
-  const headerHeight = getComputedStyle(document.documentElement).getPropertyValue('--header-height') || '4rem';
+  const footerHeight = isBrowser
+    ? getComputedStyle(document.documentElement).getPropertyValue("--footer-height") || "4rem"
+    : "4rem";
+  const headerHeight = isBrowser
+    ? getComputedStyle(document.documentElement).getPropertyValue("--header-height") || "4rem"
+    : "4rem";
   const marginBottom = `calc(${footerHeight} - 5px)`;
   const marginTop = `calc(${headerHeight} - 15px)`;
   console.log("Calculated margins:", { marginBottom, marginTop });

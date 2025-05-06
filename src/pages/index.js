@@ -19,13 +19,15 @@ const sections = [
 ];
 
 const IndexPage = () => {
+  const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const csvData = useLoadCsvData();
-  const location = useLocation();
-  const preselectIndicio = location.pathname.startsWith("/indicio/");
+  const location = isBrowser ? useLocation() : { pathname: "" };
+  const preselectIndicio = isBrowser && location.pathname.startsWith("/indicio/");
   const { logAllForms } = useFormStorage();
   const [currentPage, setCurrentPage] = React.useState(null);
 
   React.useEffect(() => {
+    if (!isBrowser) return; // Ensure this runs only in the browser
     initGTM();
     trackEvent("page_view", "Index", "Index Page Loaded", 1);
     logAllForms();
@@ -48,13 +50,15 @@ const IndexPage = () => {
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
     };
-  }, [logAllForms]);
+  }, [logAllForms, isBrowser]);
 
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex);
-    const hash = sections[pageIndex]?.hash;
-    if (hash) {
-      window.history.replaceState(null, "", `#${hash}`);
+    if (isBrowser) {
+      const hash = sections[pageIndex]?.hash;
+      if (hash) {
+        window.history.replaceState(null, "", `#${hash}`);
+      }
     }
   };
 
@@ -77,26 +81,28 @@ const IndexPage = () => {
         />
       </Helmet>
 
-      <ReactPageScroller
-        pageOnChange={handlePageChange}
-        customPageNumber={currentPage}
-        containerHeight={window.innerHeight}
-        containerWidth={window.innerWidth}
-        renderAllPagesOnFirstRender={true}
-      >
-        {sections.map((section, index) => {
-          const SectionComponent = section.component;
-          return (
-            <SectionComponent
-              key={index}
-              {...(section.hash === "formulario" && {
-                csvData,
-                preselectIndicio,
-              })}
-            />
-          );
-        })}
-      </ReactPageScroller>
+      {isBrowser && (
+        <ReactPageScroller
+          pageOnChange={handlePageChange}
+          customPageNumber={currentPage}
+          containerHeight={window.innerHeight}
+          containerWidth={window.innerWidth}
+          renderAllPagesOnFirstRender={true}
+        >
+          {sections.map((section, index) => {
+            const SectionComponent = section.component;
+            return (
+              <SectionComponent
+                key={index}
+                {...(section.hash === "formulario" && {
+                  csvData,
+                  preselectIndicio,
+                })}
+              />
+            );
+          })}
+        </ReactPageScroller>
+      )}
     </Layout>
   );
 };

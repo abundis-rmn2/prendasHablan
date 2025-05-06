@@ -6,8 +6,11 @@ import FormPage from "../components/FormPage"; // Replace FormComponent with For
 import ShareButtons from "../components/ShareButtons"; // Import ShareButtons
 
 const IndicioTemplate = ({ data }) => {
+  const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const item = data.completeDataCsv;
-  const imageUrl = `https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}.jpg`;
+  const imageUrl = isBrowser
+    ? `https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}.jpg`
+    : "";
 
   return (
     <Layout>
@@ -21,12 +24,14 @@ const IndicioTemplate = ({ data }) => {
         <meta property="og:url" content={`https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}`} />
       </Helmet>
       <div style={{height: "100vh"}} className="indicio-template">
-        <FormPage 
-          csvData={[item]} 
-          preselectIndicio={true} 
-          formContext={`indicio_${item.INDICIO}`} 
-          stepOrder={[3, 2, 1, 4]} 
-        />
+        {isBrowser && (
+          <FormPage 
+            csvData={[item]} 
+            preselectIndicio={true} 
+            formContext={`indicio_${item.INDICIO}`} 
+            stepOrder={[3, 2, 1, 4]} 
+          />
+        )}
       </div>
     </Layout>
   );
