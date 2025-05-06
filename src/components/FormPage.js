@@ -267,6 +267,18 @@ const FormPage = ({
                 "willing_to_share", 
                 "contact_info"
               ]}
+              keysToShowBySection={{
+                "Información básica": ["name", "location", "relationship", "age"],
+                "Detalles de la desaparición": ["last_seen", "has_job_offer", "job_offer_type", "contact_medium"],
+                "Identificación de Prendas": ["recognized_clothing", "clothing_owner", "recognition_reason"],
+                "Contacto y consentimiento": ["contacted_authorities", "willing_to_share", "contact_info", "authority_details"],
+              }}
+              sectionIcons={{
+                "Información básica": { path: "/images/icono-03.png", label: "Información básica" },
+                "Detalles de la desaparición": { path: "/images/icono-02.png", label: "Detalles de la desaparición" },
+                "Identificación de Prendas": { path: "/images/icono-01.png", label: "Identificación de Prendas" },
+                "Contacto y consentimiento": { path: "/images/icono-04.png", label: "Contacto y consentimiento" },
+              }}
             />
           }
         </div>
