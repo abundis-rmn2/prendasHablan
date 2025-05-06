@@ -10,6 +10,15 @@ import Modal from "./Form/Modal";
 import FormInfo from "./Form/FormInfo";
 import SummaryModal from "./Form/SummaryModal";
 import useFormStorage from "../hooks/useFormStorage";
+import logotipo from "../images/logotipo.png"; // Import the logo image
+import artes01 from "../images/artes-01.png"; // Import the decorative image
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWhatsapp, faFacebook, faFacebookMessenger, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { trackShareEvent } from "../utils/analytics"; // Import trackShareEvent
+import ShareButtonAside from "./ShareButtonAside"; // Import the new ShareButtonAside component
+import IndicioForm from "./Form/IndicioForm"; // Import IndicioForm
+
+const BASE_URL = "https://lasprendashablan.tejer.red/indicio/"; // Define BASE_URL
 
 const FormPage = ({ 
   csvData = [], 
@@ -150,16 +159,36 @@ const FormPage = ({
             )}
             <div style={{ display: "flex", maxWidth: "1280px", margin: "0 auto", width: "100%", height: "100%" }}>
         <div className="infoPrends" style={{ 
-          width: "30%", 
-          background: "lightgray",
+          width: "30%",
+          background: "lightgray", 
           display: "flex",
-          alignItems: "flex-end",
-          alignContent: "stretch", 
-          justifyContent: "center",
-          marginBottom: marginBottom, // Use calculated marginBottom
-          marginTop: marginTop // Use calculated marginTop
+          alignItems: "center",
+          placeContent: "stretch flex-end",
+          marginBottom: "calc(-5px + 4rem)",
+          marginTop: "calc(-15px + 4rem)",
+          flexDirection: "column",
+          flexWrap: "nowrap",
+          alignContent: "center",
+          justifyContent: "flex-end"
         }}>
-          <h1>Texto Prueba</h1>
+          {/*componente Indicio Tiempo Real */}
+          <IndicioForm 
+            context={formContext} 
+            preselectIndicio={preselectIndicio} 
+            csvData={csvData} 
+          />
+          <ShareButtonAside 
+            indicio="example-indicio" 
+            customText="Compartir en redes" 
+            customStyles={{
+              container: { textAlign: "left", padding: "1rem" },
+              text: { fontSize: "1.5rem", fontWeight: "bold" },
+              button: { margin: "0.25rem", padding: "0.5rem 1rem" }
+            }} 
+          />
+          <div style={{textAlign: "center", margin: "0.2rem"}}>
+            <img style={{width: "70%", height: "auto", margin: "auto", objectFit: "cover" }} src={logotipo} alt="Logotipo" />
+          </div>
         </div>
         <div className="form" style={{ 
           width: "50%",

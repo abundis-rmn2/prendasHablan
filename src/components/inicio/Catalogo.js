@@ -18,7 +18,7 @@ const Catalogo = () => (
       src="https://rancho-izaguirre.abundis.com.mx"
       style={{
         width: "100%",
-        maxWidth: "1024px",
+        maxWidth: "1280px",
         height: "75vh",
         borderTop: "1rem solid #518e9b",
         borderBottom: "1rem solid #518e9b",

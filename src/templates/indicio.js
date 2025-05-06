@@ -20,22 +20,14 @@ const IndicioTemplate = ({ data }) => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}`} />
       </Helmet>
-      <div className="indicio-template">
-        <h1>Identificador Único de Indicio: {item.INDICIO}</h1>
-        <p><b>Tipo de indicio:</b> {item.TIPO_DE_INDICIO}</p>
-        <p><b>Color:</b> {item.COLOR}</p>
-        <p><b>Marca:</b> {item.MARCA}</p>
-        <p><b>Talla:</b> {item.TALLA}</p>
-        <p><b>Observaciones:</b> {item.OBSERVACIONES}</p>
-        <img src={imageUrl} alt={item.INDICIO} style={{ maxWidth: "100%", height: "auto", maxHeight: "23rem" }} />
-        <ShareButtons indicio={item.INDICIO} />
+      <div style={{height: "100vh"}} className="indicio-template">
+        <FormPage 
+          csvData={[item]} 
+          preselectIndicio={true} 
+          formContext={`indicio_${item.INDICIO}`} 
+          stepOrder={[3, 2, 1, 4]} 
+        />
       </div>
-      <FormPage 
-        csvData={[item]} 
-        preselectIndicio={true} 
-        formContext={`indicio_${item.INDICIO}`} 
-        stepOrder={[3, 2, 1, 4]} 
-      />
     </Layout>
   );
 };
