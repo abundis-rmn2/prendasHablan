@@ -11,14 +11,8 @@ import FormInfo from "./Form/FormInfo";
 import SummaryModal from "./Form/SummaryModal";
 import useFormStorage from "../hooks/useFormStorage";
 import logotipo from "../images/logotipo.png"; // Import the logo image
-import artes01 from "../images/artes-01.png"; // Import the decorative image
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWhatsapp, faFacebook, faFacebookMessenger, faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { trackShareEvent } from "../utils/analytics"; // Import trackShareEvent
 import ShareButtonAside from "./ShareButtonAside"; // Import the new ShareButtonAside component
 import IndicioForm from "./Form/IndicioForm"; // Import IndicioForm
-
-const BASE_URL = "https://lasprendashablan.tejer.red/indicio/"; // Define BASE_URL
 
 const FormPage = ({ 
   csvData = [], 
@@ -39,6 +33,7 @@ const FormPage = ({
   const [stepIndex, setStepIndex] = useState(0);
   const currentStep = stepOrder[stepIndex];
   const [showSummaryModal, setShowSummaryModal] = useState(false);
+  const [selectedIndicios, setSelectedIndicios] = useState([]); // Shared state for selected items
 
   useEffect(() => {
     console.log("FormPage mounted");
@@ -176,6 +171,7 @@ const FormPage = ({
             context={formContext} 
             preselectIndicio={preselectIndicio} 
             csvData={csvData} 
+            selectedIndicios={selectedIndicios} // Pass shared state to IndicioForm
           />
           <ShareButtonAside 
             indicio="example-indicio" 
@@ -235,6 +231,8 @@ const FormPage = ({
                   errors={errors}
                   csvData={csvData}
                   noIndicioSelected={!preselectIndicio}
+                  selectedIndicios={selectedIndicios} // Pass shared state to Step3_Clothing
+                  setSelectedIndicios={setSelectedIndicios} // Pass setter function
                 />
               )}
               {currentStep === 4 && (

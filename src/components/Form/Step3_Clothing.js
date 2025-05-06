@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as styles from "./FormStyles.module.css"; // Import shared styles
 
-const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noIndicioSelected }) => {
-  const [selectedIndicios, setSelectedIndicios] = useState([]);
+const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noIndicioSelected, selectedIndicios, setSelectedIndicios }) => {
   const contactedAuthorities = watch("contacted_authorities");
 
   useEffect(() => {
@@ -19,7 +18,7 @@ const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noInd
     const options = Array.from(e.target.selectedOptions).map((option) => option.value);
     const selectedItems = csvData.filter((item) => options.includes(item.INDICIO));
     console.log("Selected items:", selectedItems);
-    setSelectedIndicios(selectedItems);
+    setSelectedIndicios(selectedItems); // Update shared state
     if (setValue) {
       setValue("recognized_clothing", options); // Update form state
     }
@@ -27,7 +26,7 @@ const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noInd
 
   const handleDeselect = (id) => {
     const updatedIndicios = selectedIndicios.filter((item) => item.id !== id);
-    setSelectedIndicios(updatedIndicios);
+    setSelectedIndicios(updatedIndicios); // Update shared state
     if (setValue) {
       setValue("recognized_clothing", updatedIndicios.map((item) => item.INDICIO)); // Update form state
     }
@@ -43,7 +42,6 @@ const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noInd
           <select
             className={styles.fullWidthInput}
             {...register("recognized_clothing", { required: true })}
-            multiple
             value={selectedIndicios.map((item) => item.INDICIO)} // Use value to control the selected options
             onChange={handleSelectChange}
           >
@@ -61,24 +59,7 @@ const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noInd
         </label>
       </div>
 
-      <div className={styles.gallery}>
-        {selectedIndicios.map((item) => (
-          <div key={item.id} className={styles.thumbnail}>
-            <img
-              src={`https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}.jpg`}
-              alt={item.INDICIO}
-              className={styles.thumbnailImage}
-            />
-            <button
-              type="button"
-              className={styles.deselectButton}
-              onClick={() => handleDeselect(item.id)}
-            >
-              ×
-            </button>
-          </div>
-        ))}
-      </div>
+
 
       <div className={styles.formGroup}>
         <label>
