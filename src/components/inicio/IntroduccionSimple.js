@@ -4,12 +4,13 @@ import "../../styles/introduccion.css"; // Import the new CSS file
 import bgComp from "../../images/bg_comp.jpg";
 import logotipo from "../../images/logotipo.png";
 import artes01 from "../../images/artes-01.png"; // Import the decorative image
+import isMobile from "../../utils/IsMobile"; // Import isMobile utility
 
 const IntroduccionSimple = () => (
   <section id="introduccion" className="full-page-section introduccion-section">
     <div className="introduccion-container">
       {/* Left Div */}
-      <div className="introduccion-simple" style={{ paddingTop: "50px", backgroundImage: `url(${bgComp})`, width: "100%", height: "100vh", backgroundSize: "cover", backgroundPosition: "center" }}>
+      <div className="introduccion-simple" style={{ paddingTop: "50px", backgroundImage: `url(${bgComp})`, width: "100%", backgroundSize: "cover", backgroundPosition: "center" }}>
             <div style={{ textAlign: "center", marginBottom: "20px" }}>
                 <img src={logotipo} alt="Logotipo" style={{ width: "300px", height: "auto", margin: "0 auto"}} />
             </div>

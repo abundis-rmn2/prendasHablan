@@ -4,11 +4,21 @@ import { Helmet } from "react-helmet"; // Import Helmet for meta tags
 import Layout from "../components/layout";
 import FormPage from "../components/FormPage"; // Replace FormComponent with FormPage
 import ShareButtons from "../components/ShareButtons"; // Import ShareButtons
+import isMobile from "../utils/IsMobile"; // Import isMobile utility
 
 const IndicioTemplate = ({ data }) => {
   const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const item = data.completeDataCsv;
   const imageUrl = `https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}.jpg`;
+
+  React.useEffect(() => {
+    if (isMobile()) {
+      alert("You are using a mobile device.");
+    } else {
+      alert("You are not using a mobile device.");
+    }
+  }, []);
+
   return (
     <Layout>
       <Helmet>
@@ -24,7 +34,7 @@ const IndicioTemplate = ({ data }) => {
         ${!isBrowser ? 'html { overflow: scroll !important; }' : ''}
       `}</style>
 
-      <div className="static-content" style={{ display: isBrowser ? 'none' : 'block', padding: "20px", margin: "0 auto", maxWidth: "800px", marginTop: "5rem" }}>
+      <div className="static-content" style={{ padding: "20px", margin: "0 auto", maxWidth: "800px", marginTop: "5rem" }}>
         {item.id && <img style={{ width: "128px" }} src={imageUrl} alt={item.INDICIO} className="indicio-image" />}
         <h4>{`Indicio: ${item.INDICIO}`}</h4>
         <ul>
@@ -41,16 +51,14 @@ const IndicioTemplate = ({ data }) => {
         indicio={item.INDICIO}>
         </ShareButtons>
       </div>
-      {isBrowser && (
-      <div style={{height: "100vh", display: isBrowser ? 'block' : 'none' }} className="indicio-template">  
-          <FormPage 
-            csvData={[item]} 
-            preselectIndicio={true} 
-            formContext={`indicio_${item.INDICIO}`} 
-            stepOrder={[3, 2, 1, 4]} 
-          />
+      <div style={{ height: "100vh", display: isBrowser ? 'block' : 'none' }} className="indicio-template">
+        <FormPage 
+          csvData={[item]} 
+          preselectIndicio={true} 
+          formContext={`indicio_${item.INDICIO}`} 
+          stepOrder={[3, 2, 1, 4]} 
+        />
       </div>
-       )}
     </Layout>
   );
 };

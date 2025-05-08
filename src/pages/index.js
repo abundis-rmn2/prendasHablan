@@ -12,6 +12,7 @@ import Introduccion from "../components/inicio/Introduccion";
 import Catalogo from "../components/inicio/Catalogo";
 import Formulario from "../components/inicio/Formulario";
 import IntroduccionSimple from "../components/inicio/IntroduccionSimple";
+import isMobile from "../utils/IsMobile"; // Import isMobile utility
 
 const sections = [
   { name: "Introducción", hash: "introduccion", component: Introduccion },
@@ -53,6 +54,14 @@ const IndexPage = () => {
     };
   }, [logAllForms]);
 
+  React.useEffect(() => {
+    if (isMobile()) {
+      alert("You are using a mobile device.");
+    } else {
+      alert("You are not using a mobile device.");
+    }
+  }, []);
+
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex);
     if (isBrowser) {
@@ -80,17 +89,16 @@ const IndexPage = () => {
 
       <style>{`
         ${!isBrowser ? 'html { overflow: scroll !important; }' : ''}
+        ${isMobile() ? 'html { overflow: scroll !important; }' : ''}
       `}</style>
 
-      {/* Static content for SSG */}
-        <div className="static-content" style={{ 
-          display: isBrowser ? 'none' : 'block' 
-          }}>
+      {isMobile() ? (
+        <div className="mobile-content static-content">
           <IntroduccionSimple />
+          <Catalogo />
+          <Formulario />
         </div>
-
-        {/* Dynamic content for hydration */}
-      {isBrowser && (
+      ) : (
         <ReactPageScroller
           pageOnChange={handlePageChange}
           customPageNumber={currentPage}
