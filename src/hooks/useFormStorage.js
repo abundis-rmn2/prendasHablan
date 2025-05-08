@@ -1,38 +1,47 @@
 import { useState, useEffect } from "react";
 
 const useFormStorage = (keyName = "formData") => {
-  console.log(`Using useFormStorage with key: ${keyName}`); // Alert for keyName being used
-
+  const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const [storedData, setStoredData] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!isBrowser) {
+      setIsLoading(false);
+      return;
+    }
     const saved = localStorage.getItem(keyName);
     if (saved) {
       setStoredData(JSON.parse(saved));
       setShowModal(true);
     }
     setIsLoading(false);
-  }, [keyName]);
+  }, [keyName, isBrowser]);
 
   const saveFormData = (data) => {
-    localStorage.setItem(keyName, JSON.stringify(data));
-    setStoredData(data);
+    if (isBrowser) {
+      localStorage.setItem(keyName, JSON.stringify(data));
+      setStoredData(data);
+    }
   };
 
   const resetFormData = () => {
-    localStorage.removeItem(keyName);
-    setStoredData({});
+    if (isBrowser) {
+      localStorage.removeItem(keyName);
+      setStoredData({});
+    }
   };
 
   const logAllForms = () => {
-    console.log("All saved forms in localStorage:");
-    Object.keys(localStorage).forEach((key) => {
-      if (key.startsWith("formData_")) {
-        console.log(`${key}:`, JSON.parse(localStorage.getItem(key)));
-      }
-    });
+    if (isBrowser) {
+      console.log("All saved forms in localStorage:");
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith("formData_")) {
+          console.log(`${key}:`, JSON.parse(localStorage.getItem(key)));
+        }
+      });
+    }
   };
 
   return {

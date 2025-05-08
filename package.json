@@ -17,10 +17,12 @@
     "gatsby-source-filesystem": "^5.14.0",
     "gatsby-transformer-csv": "^5.14.0",
     "gatsby-transformer-sharp": "^5.14.0",
+    "lucide-react": "^0.507.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
-    "react-hook-form": "^7.56.1"
+    "react-hook-form": "^7.56.1",
+    "react-page-scroller": "^3.0.1"
   },
   "devDependencies": {
     "prettier": "^2.8.8"

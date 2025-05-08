@@ -10,6 +10,9 @@ import Modal from "./Form/Modal";
 import FormInfo from "./Form/FormInfo";
 import SummaryModal from "./Form/SummaryModal";
 import useFormStorage from "../hooks/useFormStorage";
+import logotipo from "../images/logotipo.png"; // Import the logo image
+import ShareButtonAside from "./ShareButtonAside"; // Import the new ShareButtonAside component
+import IndicioForm from "./Form/IndicioForm"; // Import IndicioForm
 
 const FormPage = ({ 
   csvData = [], 
@@ -17,6 +20,7 @@ const FormPage = ({
   formContext = "default", 
   stepOrder = [1, 2, 3, 4] 
 }) => {
+  const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const { register, handleSubmit, watch, control, reset, setValue, formState: { errors } } = useForm();
   const { 
     storedData, 
@@ -30,6 +34,7 @@ const FormPage = ({
   const [stepIndex, setStepIndex] = useState(0);
   const currentStep = stepOrder[stepIndex];
   const [showSummaryModal, setShowSummaryModal] = useState(false);
+  const [selectedIndicios, setSelectedIndicios] = useState([]); // Shared state for selected items
 
   useEffect(() => {
     console.log("FormPage mounted");
@@ -111,6 +116,17 @@ const FormPage = ({
     console.log("Form reset and step index set to 0");
   };
 
+  // Calculate dynamic margins
+  const footerHeight = isBrowser
+    ? getComputedStyle(document.documentElement).getPropertyValue("--footer-height") || "4rem"
+    : "4rem";
+  const headerHeight = isBrowser
+    ? getComputedStyle(document.documentElement).getPropertyValue("--header-height") || "4rem"
+    : "4rem";
+  const marginBottom = `calc(${footerHeight} - 5px)`;
+  const marginTop = `calc(${headerHeight} - 15px)`;
+  console.log("Calculated margins:", { marginBottom, marginTop });
+
   if (isLoading) {
     console.log("Loading state active");
     return <p>Cargando...</p>;
@@ -133,57 +149,177 @@ const FormPage = ({
           }}
           setShowModal={setShowModal} // Pass setShowModal to Modal
         />
-      )}
-      {showSummaryModal && (
+            )}
+            {showSummaryModal && (
         <SummaryModal
           data={storedData}
           onConfirm={handleFinalSubmit}
           onCancel={handleCancelSummary}
         />
-      )}
-      <FormInfo data={storedData} />
-      {stepIndex === stepOrder.length ? (
-        <Step5ThankYou onStartNewForm={handleStartNewForm} />
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormProgress currentStep={stepIndex + 1} totalSteps={stepOrder.length} />
-          {currentStep === 1 && (
-            <Step1BasicInfo
-              register={register}
-              control={control}
-              errors={errors}
-            />
-          )}
-          {currentStep === 2 && (
-            <Step2Disappearance
-              register={register}
-              watch={watch}
-              errors={errors}
-            />
-          )}
-          {currentStep === 3 && (
-            <Step3Clothing
-              register={register}
-              setValue={setValue}
-              watch={watch}
-              errors={errors}
-              csvData={csvData}
-              noIndicioSelected={!preselectIndicio}
-            />
-          )}
-          {currentStep === 4 && (
-            <Step4Consent
-              register={register}
-              watch={watch}
-              errors={errors}
-            />
-          )}
-          <div>
-            {stepIndex > 0 && <button type="button" onClick={prevStep}>Anterior</button>}
-            <button type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
+            )}
+            <div style={{ display: "flex", maxWidth: "1280px", margin: "0 auto", width: "100%", height: "100%" }}>
+        <div className="infoPrends" style={{ 
+          width: "30%",
+          background: "lightgray", 
+          display: "flex",
+          alignItems: "center",
+          placeContent: "stretch flex-end",
+          marginBottom: "calc(-5px + 4rem)",
+          marginTop: "calc(-15px + 4rem)",
+          flexDirection: "column",
+          flexWrap: "nowrap",
+          alignContent: "center",
+          justifyContent: "flex-end"
+        }}>
+          {/*componente Indicio Tiempo Real */}
+          <IndicioForm 
+            context={formContext} 
+            preselectIndicio={preselectIndicio} 
+            csvData={csvData} 
+            selectedIndicios={selectedIndicios} // Pass shared state to IndicioForm
+          />
+          <ShareButtonAside 
+            indicio="example-indicio" 
+            customText="Compartir en redes" 
+            customStyles={{
+              container: { textAlign: "left", padding: "1rem" },
+              text: { fontSize: "1.5rem", fontWeight: "bold" },
+              button: { margin: "0.25rem", padding: "0.5rem 1rem" }
+            }} 
+          />
+          <div style={{textAlign: "center", margin: "0.2rem"}}>
+            <img style={{width: "70%", height: "auto", margin: "auto", objectFit: "cover" }} src={logotipo} alt="Logotipo" />
           </div>
-        </form>
-      )}
+        </div>
+        <div className="form" style={{ 
+          width: "50%",
+          overflowY: "overlay",
+          marginBottom: marginBottom,
+          marginTop: marginTop,
+          display: "flex",
+          flexDirection: "row",
+          alignContent: "center", 
+          alignItems: "center",
+          justifyContent: "center",
+          overflowX: "hidden",
+          padding: "1rem"
+        }}>
+          {stepIndex === stepOrder.length ? (
+            <Step5ThankYou onStartNewForm={handleStartNewForm} />
+          ) : (
+            <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+              <FormProgress 
+            currentStep={stepIndex + 1} 
+            totalSteps={stepOrder.length} 
+            stepOrder={stepOrder} 
+            formContext={formContext} // Pass formContext to FormProgress</div>
+              />
+              {currentStep === 1 && (
+                <Step1BasicInfo
+                  register={register}
+                  control={control}
+                  errors={errors}
+                />
+              )}
+              {currentStep === 2 && (
+                <Step2Disappearance
+                  register={register}
+                  watch={watch}
+                  errors={errors}
+                />
+              )}
+              {currentStep === 3 && (
+                <Step3Clothing
+                  register={register}
+                  setValue={setValue}
+                  watch={watch}
+                  errors={errors}
+                  csvData={csvData}
+                  noIndicioSelected={!preselectIndicio}
+                  selectedIndicios={selectedIndicios} // Pass shared state to Step3_Clothing
+                  setSelectedIndicios={setSelectedIndicios} // Pass setter function
+                />
+              )}
+              {currentStep === 4 && (
+                <Step4Consent
+                  register={register}
+                  watch={watch}
+                  errors={errors}
+                />
+              )}
+              <div style={{ display: "flex", justifyContent: "space-around", marginTop: "1rem" }}>
+                {stepIndex > 0 && 
+                    <button 
+                      style={{backgroundColor: "#518e9b", color: "white", border: "none", padding: "0.5rem 1rem", cursor: "pointer", fontSize: "1.2rem", borderRadius: "4px"}} 
+                      type="button" onClick={prevStep}>Anterior</button>}
+                    <button 
+                      style={{backgroundColor: "#518e9b", color: "white", border: "none", padding: "0.5rem 1rem", cursor: "pointer", fontSize: "1.2rem", borderRadius: "4px"}} 
+                      type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
+              </div>
+            </form>
+          )}
+        </div>
+        <div className="formInfo" style={{ 
+          width: "20%",
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "wrap",
+          alignContent: "center",
+          justifyContent: "center",
+          alignItems: "stretch"
+        }}>
+          {
+            <FormInfo 
+              data={storedData} 
+              keyTexts={{
+                name: "Nombre reportante",
+                location: "Ubicación reportante",
+                relationship: "Relación con la persona desaparecida",
+                age: "Edad de la persona desaparecida",
+                last_seen: "Última vez visto",
+                has_job_offer: "Relación a oferta de trabajo",
+                job_offer_type: "Tipo de oferta de trabajo",
+                contact_medium: "Medio de contacto",
+                recognized_clothing: "Indicio reconocido",
+                clothing_owner: "Dueño de la ropa",
+                recognition_reason: "Razón de reconocimiento",
+                contacted_authorities: "Autoridades contactadas",
+                willing_to_share: "Dispuesto a compartir",
+                contact_info: "Información de contacto",
+                authority_details: "Detalles de la autoridad"
+              }} 
+              keysToShow={[
+                "name", 
+                "location", 
+                "relationship", 
+                "age", 
+                "last_seen", 
+                "has_job_offer", 
+                "job_offer_type", 
+                "contact_medium", 
+                "recognized_clothing", 
+                "clothing_owner", 
+                "recognition_reason", 
+                "contacted_authorities", 
+                "willing_to_share", 
+                "contact_info"
+              ]}
+              keysToShowBySection={{
+                "Información básica": ["name", "location", "relationship", "age"],
+                "Detalles de la desaparición": ["last_seen", "has_job_offer", "job_offer_type", "contact_medium"],
+                "Identificación de Prendas": ["recognized_clothing", "clothing_owner", "recognition_reason"],
+                "Contacto y consentimiento": ["contacted_authorities", "willing_to_share", "contact_info", "authority_details"],
+              }}
+              sectionIcons={{
+                "Información básica": { path: "/images/icono-03.png", label: "Información básica" },
+                "Detalles de la desaparición": { path: "/images/icono-02.png", label: "Detalles de la desaparición" },
+                "Identificación de Prendas": { path: "/images/icono-01.png", label: "Identificación de Prendas" },
+                "Contacto y consentimiento": { path: "/images/icono-04.png", label: "Contacto y consentimiento" },
+              }}
+            />
+          }
+        </div>
+      </div>
     </>
   );
 };

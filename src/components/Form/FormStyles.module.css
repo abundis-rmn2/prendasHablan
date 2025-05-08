@@ -77,7 +77,7 @@ textarea.fullWidthInput {
 }
 
 .modalOverlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -111,12 +111,12 @@ textarea.fullWidthInput {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background: #007bff;
+  background: #518e9b;
   color: white;
 }
 
 .modalButton:hover {
-  background: #0056b3;
+  background: #518d9b76;
 }
 
 ul {

@@ -1,0 +1,68 @@
+.header-container {
+  /* Add styles for the header container */
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-top-container {
+  /* Add styles for the header top container */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  /* Add styles for the header title */
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.header-top-container .section-nav-menu {
+  /* Add styles for the navigation menu */
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.header-top-container .section-nav-link {
+  /* Add styles for the navigation links */
+  text-decoration: none;
+  color: #fff;
+  font-weight: normal;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: transparent;
+  transition: all 0.6s ease; /* Add transition */
+}
+
+.header-top-container .section-nav-link.active {
+  /* Add styles for the active navigation link */
+  color: #000;
+  font-weight: bold;
+  background-color: #ffffff;
+}
+
+.header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  height: 3rem;
+  padding: 0.5rem 3rem;
+  background: black;
+  border: none;
+}
+
+.header-top-container {
+  display: flex
+;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}

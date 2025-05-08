@@ -1,52 +1,117 @@
 import * as React from "react";
 import Layout from "../components/layout";
-import IndicioList from "../components/IndicioList";
-import FormPage from "../components/FormPage"; // Updated import
 import useLoadCsvData from "../utils/useLoadCsvData";
-import * as styles from "../components/index.module.css";
 import { initGTM, trackEvent } from "../utils/analytics";
 import { Helmet } from "react-helmet";
-import { useLocation } from "@reach/router"; // Import useLocation
-import useFormStorage from "../hooks/useFormStorage"; // Import useFormStorage
+import { useLocation } from "@reach/router";
+import useFormStorage from "../hooks/useFormStorage";
+import ReactPageScroller from "react-page-scroller";
+import "../components/index.module.css";
+import SectionNav from "../utils/SectionNav";
+import Introduccion from "../components/inicio/Introduccion";
+import Catalogo from "../components/inicio/Catalogo";
+import Formulario from "../components/inicio/Formulario";
+import IntroduccionSimple from "../components/inicio/IntroduccionSimple";
+
+const sections = [
+  { name: "Introducción", hash: "introduccion", component: Introduccion },
+  { name: "Catálogo", hash: "catalogo", component: Catalogo },
+  { name: "Formulario", hash: "formulario", component: Formulario },
+];
 
 const IndexPage = () => {
+  const isBrowser = typeof window !== "undefined"; // Check for browser environment
+  const location = useLocation(); // Call useLocation unconditionally
   const csvData = useLoadCsvData();
-  const location = useLocation(); // Get the current location
-  const preselectIndicio = location.pathname.startsWith("/indicio/"); // Determine if an indicio should be preselected
-  const { logAllForms } = useFormStorage(); // Destructure logAllForms
+  const preselectIndicio = isBrowser && location.pathname.startsWith("/indicio/");
+  const { logAllForms } = useFormStorage();
+  const [currentPage, setCurrentPage] = React.useState(0); // Default to the first page
 
   React.useEffect(() => {
+    if (!isBrowser) return; // Ensure this runs only in the browser
     initGTM();
     trackEvent("page_view", "Index", "Index Page Loaded", 1);
-    logAllForms(); // Log all saved forms in localStorage
-  }, [logAllForms]); // Add 'logAllForms' to dependency array
+    logAllForms();
+
+    const initialHash = window.location.hash.replace("#", "");
+    const initialPageIndex = sections.findIndex(
+      (section) => section.hash === initialHash
+    );
+    setCurrentPage(initialPageIndex !== -1 ? initialPageIndex : 0);
+
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      const pageIndex = sections.findIndex((section) => section.hash === hash);
+      if (pageIndex !== -1) {
+        setCurrentPage(pageIndex);
+      }
+    };
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [logAllForms]);
+
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex);
+    if (isBrowser) {
+      const hash = sections[pageIndex]?.hash;
+      if (hash) {
+        window.history.replaceState(null, "", `#${hash}`);
+      }
+    }
+  };
 
   return (
-    <Layout>
+    <Layout
+      pageType="index"
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      sectionNames={sections.map((section) => section.name)}
+    >
       <Helmet>
         <title>Las Prendas Hablan - Tejer.RED | Inicio</title>
-        <meta name="description" content="Bienvenido a Las Prendas Hablan - Tejer.RED, una plataforma para explorar indicios y más." />
+        <meta
+          name="description"
+          content="Bienvenido a Las Prendas Hablan - Tejer.RED, una plataforma para explorar indicios y más."
+        />
       </Helmet>
-      <div className={styles.textCenter}>
-        <h1>Las Prendas Hablan</h1>
-      </div>
-      {/* Descripción del proyecto */ }
-      <div className={styles.textJustify}>
-      <p>Desde "Las Prendas Hablan" damos un abrazo solidario a las familias y colectivos de búsqueda de personas desaparecidas de todo el país. Lo que buscamos con este proyecto impulsado por los equipos de <a href="https://animalpolitico.com">Animal Político</a>, <a href="https://adondevanlosdesaparecidos.org/">A dónde van los desaparecidos</a> y <a href="https://www.zonadocs.mx/">ZonaDocs</a>, con el apoyo de <a href="https://tejer.red">Tejer Red</a>, es contribuir a conocer la verdad sobre lo que ocurrió en el rancho Izaguirre en Teuchitlán, Jalisco, y abonar a la búsqueda de verdad.</p>
 
-      <p>El proyecto "Las Prendas Hablan" es una iniciativa de <a href="https://animalpolitico.com">Animal Político</a>, <a href="https://adondevanlosdesaparecidos.org/">A dónde van los desaparecidos</a>, <a href="https://www.zonadocs.mx/">ZonaDocs</a> que busca identificar, junto a familias buscadoras, coincidencias entre las prendas de vestir e indicios localizados en el Rancho Izaguirre en Teuchitlán, Jalisco, y aquellas portadas por personas reportadas como desaparecidas. Esto para identificar cómo opera "el circuito de desaparición", mediante el cual las personas fueron víctimas de reclutamiento forzado.</p>
+      <style>{`
+        ${!isBrowser ? 'html { overflow: scroll !important; }' : ''}
+      `}</style>
 
-      <p>Les compartimos esta encuesta mediante la cual esperamos obtener información para realizar la investigación que posteriormente les enviaremos. El objetivo de este formulario es que nos puedan dar datos que ayuden a identificar este circuito y que sea una herramienta que ayude a que todas y todos regresen a casa.</p>
+      {/* Static content for SSG */}
+        <div className="static-content" style={{ 
+          display: isBrowser ? 'none' : 'block' 
+          }}>
+          <IntroduccionSimple />
+        </div>
 
-      <p>Cualquier duda por favor contáctenos; tengan certeza que sus datos personales serán cuidados y resguardados. Gracias de antemano.</p>
-      </div>
-      { /* <IndicioList csvData={csvData} /> */ }
-      <FormPage 
-        csvData={csvData} 
-        preselectIndicio={preselectIndicio} 
-        formContext="default" 
-        stepOrder={[1, 2, 3, 4]} 
-      />
+        {/* Dynamic content for hydration */}
+      {isBrowser && (
+        <ReactPageScroller
+          pageOnChange={handlePageChange}
+          customPageNumber={currentPage}
+          containerHeight={window.innerHeight}
+          containerWidth={window.innerWidth}
+          renderAllPagesOnFirstRender={true}
+        >
+          {sections.map((section, index) => {
+            const SectionComponent = section.component;
+            return (
+              <SectionComponent
+                key={index}
+                {...(section.hash === "formulario" && {
+                  csvData,
+                  preselectIndicio,
+                })}
+              />
+            );
+          })}
+        </ReactPageScroller>
+      )}
     </Layout>
   );
 };

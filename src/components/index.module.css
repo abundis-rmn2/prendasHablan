@@ -46,6 +46,7 @@
 
 .textCenter {
   text-align: center;
+  font-family: var(--font-sans);
 }
 
 .textJustify {
@@ -55,6 +56,7 @@
 .textJustify > p {
   max-width: none;
   font-size: 1.3em;
+  font-family: var(--font-sans);
 }
 
 .textJustify::after {
@@ -83,6 +85,7 @@
   margin-bottom: 1rem;
   text-align: center;
   color: #333;
+  font-family: var(--font-sans);
 }
 
 .formGroup {
@@ -110,7 +113,7 @@
 .formInput:focus,
 .formSelect:focus,
 .formTextarea:focus {
-  border-color: #007acc;
+  border-color: #00cc5c;
   outline: none;
   box-shadow: 0 0 4px rgba(0, 122, 204, 0.5);
 }
@@ -127,7 +130,7 @@
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #007acc;
+  background-color: #00cc5c;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -142,4 +145,25 @@
   color: blue;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.react-page-scroller-navigation {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.react-page-scroller-navigation .dot {
+  width: 12px;
+  height: 12px;
+  margin: 8px 0;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.react-page-scroller-navigation .dot.active {
+  background-color: #000;
 }

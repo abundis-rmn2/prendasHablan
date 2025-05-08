@@ -50,11 +50,11 @@ const SummaryModal = ({ data, onConfirm, onCancel }) => {
             ))}
         </ul>
         <div className={styles.modalActions}>
+        <button style={{ backgroundColor: "red" }} className={styles.modalButton} onClick={onCancel}>
+            Cancelar
+          </button>
           <button className={styles.modalButton} onClick={handleConfirm}>
             Confirmar y Enviar
-          </button>
-          <button className={styles.modalButton} onClick={onCancel}>
-            Cancelar
           </button>
         </div>
       </div>
