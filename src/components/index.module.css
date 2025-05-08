@@ -113,7 +113,7 @@
 .formInput:focus,
 .formSelect:focus,
 .formTextarea:focus {
-  border-color: #007acc;
+  border-color: #00cc5c;
   outline: none;
   box-shadow: 0 0 4px rgba(0, 122, 204, 0.5);
 }
@@ -130,7 +130,7 @@
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #007acc;
+  background-color: #00cc5c;
   border: none;
   border-radius: 4px;
   cursor: pointer;

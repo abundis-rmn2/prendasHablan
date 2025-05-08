@@ -247,9 +247,14 @@ const FormPage = ({
                   errors={errors}
                 />
               )}
-              <div>
-                {stepIndex > 0 && <button type="button" onClick={prevStep}>Anterior</button>}
-                <button type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
+              <div style={{ display: "flex", justifyContent: "space-around", marginTop: "1rem" }}>
+                {stepIndex > 0 && 
+                    <button 
+                      style={{backgroundColor: "#518e9b", color: "white", border: "none", padding: "0.5rem 1rem", cursor: "pointer", fontSize: "1.2rem", borderRadius: "4px"}} 
+                      type="button" onClick={prevStep}>Anterior</button>}
+                    <button 
+                      style={{backgroundColor: "#518e9b", color: "white", border: "none", padding: "0.5rem 1rem", cursor: "pointer", fontSize: "1.2rem", borderRadius: "4px"}} 
+                      type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
               </div>
             </form>
           )}
