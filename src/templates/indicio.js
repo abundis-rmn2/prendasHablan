@@ -8,10 +8,7 @@ import ShareButtons from "../components/ShareButtons"; // Import ShareButtons
 const IndicioTemplate = ({ data }) => {
   const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const item = data.completeDataCsv;
-  const imageUrl = isBrowser
-    ? `https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}.jpg`
-    : "";
-
+  const imageUrl = `https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}.jpg`;
   return (
     <Layout>
       <Helmet>
@@ -23,16 +20,37 @@ const IndicioTemplate = ({ data }) => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://rancho-izaguirre.abundis.com.mx/indicios/${item.id}`} />
       </Helmet>
-      <div style={{height: "100vh"}} className="indicio-template">
-        {isBrowser && (
+      <style>{`
+        ${!isBrowser ? 'html { overflow: scroll !important; }' : ''}
+      `}</style>
+
+      <div className="static-content" style={{ display: isBrowser ? 'none' : 'block', padding: "20px", margin: "0 auto", maxWidth: "800px", marginTop: "5rem" }}>
+        {item.id && <img style={{ width: "128px" }} src={imageUrl} alt={item.INDICIO} className="indicio-image" />}
+        <h4>{`Indicio: ${item.INDICIO}`}</h4>
+        <ul>
+          <li><strong>Tipo:</strong> {item.TIPO_DE_INDICIO}</li>
+          <li><strong>Color:</strong> {item.COLOR}</li>
+          <li><strong>Marca:</strong> {item.MARCA}</li>
+          <li><strong>Talla:</strong> {item.TALLA}</li>
+          <li><strong>Observaciones:</strong> {item.OBSERVACIONES}</li>
+          <li><strong>Link Foto:</strong> {item.LINK_FOTO}</li>
+        </ul>
+        <p>Este indicio forma parte del proyecto "Las Prendas Hablan", una colaboración entre <a href="https://animalpolitico.com">Animal Político</a>, <a href="https://adondevanlosdesaparecidos.org/">A dónde van los desaparecidos</a>, <a href="https://www.zonadocs.mx/">ZonaDocs</a> y <a href="https://tejer.red">Tejer Red</a>. Buscamos identificar prendas localizadas en el Rancho Izaguirre (Teuchitlán, Jalisco) que puedan coincidir con las de personas desaparecidas, como parte de una investigación sobre el circuito de desaparición y reclutamiento forzado.</p>
+        <p>Si reconoces este indicio o tienes información relacionada, escríbenos a lasprendashablan@gmail.com para reportarlo. Tu aportación puede ayudar a que más personas regresen a casa.</p>
+        <ShareButtons 
+        indicio={item.INDICIO}>
+        </ShareButtons>
+      </div>
+      {isBrowser && (
+      <div style={{height: "100vh", display: isBrowser ? 'block' : 'none' }} className="indicio-template">  
           <FormPage 
             csvData={[item]} 
             preselectIndicio={true} 
             formContext={`indicio_${item.INDICIO}`} 
             stepOrder={[3, 2, 1, 4]} 
           />
-        )}
       </div>
+       )}
     </Layout>
   );
 };

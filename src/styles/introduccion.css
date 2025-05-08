@@ -120,3 +120,18 @@
   background: rgba(81, 141, 155, 0.375);
   color: #ffffff;
 }
+.introduccion-simple .introduccion-text p {
+  margin: 1rem auto;
+  line-height: 2rem;
+}
+
+.static-content .introduccion-decorative {
+  right: 1%;
+  left: auto;
+}
+
+@media screen and (max-width: 1000px) {
+  .static-content .introduccion-decorative {
+    display: none;
+  }
+}

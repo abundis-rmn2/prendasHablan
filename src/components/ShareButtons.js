@@ -16,14 +16,19 @@ const ShareButtons = ({ indicio }) => {
   const buttonStyle = {
     display: "inline-block",
     margin: "0.5rem",
-    padding: "0.75rem 1.5rem",
     borderRadius: "5px",
     color: "#fff",
     fontSize: "1.2rem",
     textDecoration: "none",
     textAlign: "center",
+    width: "68px",
+    height: "68px",
+    padding: "4px",
   };
-
+  const iconStyle = {
+    height: "64px",
+    width: "64px",
+  }
   return (
     <div className="share-buttons" style={{ textAlign: "center" }}>
       <p>Compartir:</p>
@@ -35,7 +40,7 @@ const ShareButtons = ({ indicio }) => {
         className="share-button whatsapp"
         onClick={() => handleShare("WhatsApp")}
       >
-        <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp
+        <FontAwesomeIcon style={iconStyle} icon={faWhatsapp} /> 
       </a>
       <a
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
@@ -45,7 +50,7 @@ const ShareButtons = ({ indicio }) => {
         className="share-button facebook"
         onClick={() => handleShare("Facebook")}
       >
-        <FontAwesomeIcon icon={faFacebook} /> Facebook
+        <FontAwesomeIcon style={iconStyle} icon={faFacebook} /> 
       </a>
       <a
         href={`fb-messenger://share/?link=${encodeURIComponent(shareUrl)}`}
@@ -55,7 +60,7 @@ const ShareButtons = ({ indicio }) => {
         className="share-button messenger"
         onClick={() => handleShare("Messenger")}
       >
-        <FontAwesomeIcon icon={faFacebookMessenger} /> Messenger
+        <FontAwesomeIcon style={iconStyle} icon={faFacebookMessenger} /> 
       </a>
       <a
         href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`}
@@ -65,7 +70,7 @@ const ShareButtons = ({ indicio }) => {
         className="share-button twitter"
         onClick={() => handleShare("Twitter")}
       >
-        <FontAwesomeIcon icon={faTwitter} /> X
+        <FontAwesomeIcon style={iconStyle} icon={faTwitter} />
       </a>
     </div>
   );

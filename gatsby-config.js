@@ -9,10 +9,13 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
-    siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
+    title: `Las Prendas Hablan - Tejer.RED`,
+    titleTemplate: `%s | Tejer.RED`,
+    description: `Las Prendas Hablan - Tejer.RED es una plataforma para explorar indicios y más.`,
+    keywords: `Las Prendas Hablan, Tejer.RED, indicios, prendas, exploración, desaparecidos, Rancho Teuchitlan, mmexico`,
+    image: `https://rancho-izaguirre.abundis.com.mx/indicios/indicio.jpg`, // Default image for social sharing
+    author: `Angel Abundis`,
+    siteUrl: `https://lasprendashablan.tejer.red`,
   },
   plugins: [
     `gatsby-plugin-image`,

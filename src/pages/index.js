@@ -11,6 +11,7 @@ import SectionNav from "../utils/SectionNav";
 import Introduccion from "../components/inicio/Introduccion";
 import Catalogo from "../components/inicio/Catalogo";
 import Formulario from "../components/inicio/Formulario";
+import IntroduccionSimple from "../components/inicio/IntroduccionSimple";
 
 const sections = [
   { name: "Introducción", hash: "introduccion", component: Introduccion },
@@ -20,11 +21,11 @@ const sections = [
 
 const IndexPage = () => {
   const isBrowser = typeof window !== "undefined"; // Check for browser environment
+  const location = useLocation(); // Call useLocation unconditionally
   const csvData = useLoadCsvData();
-  const location = isBrowser ? useLocation() : { pathname: "" };
   const preselectIndicio = isBrowser && location.pathname.startsWith("/indicio/");
   const { logAllForms } = useFormStorage();
-  const [currentPage, setCurrentPage] = React.useState(null);
+  const [currentPage, setCurrentPage] = React.useState(0); // Default to the first page
 
   React.useEffect(() => {
     if (!isBrowser) return; // Ensure this runs only in the browser
@@ -50,7 +51,7 @@ const IndexPage = () => {
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
     };
-  }, [logAllForms, isBrowser]);
+  }, [logAllForms]);
 
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex);
@@ -61,10 +62,6 @@ const IndexPage = () => {
       }
     }
   };
-
-  if (currentPage === null) {
-    return null;
-  }
 
   return (
     <Layout
@@ -81,6 +78,18 @@ const IndexPage = () => {
         />
       </Helmet>
 
+      <style>{`
+        ${!isBrowser ? 'html { overflow: scroll !important; }' : ''}
+      `}</style>
+
+      {/* Static content for SSG */}
+        <div className="static-content" style={{ 
+          display: isBrowser ? 'none' : 'block' 
+          }}>
+          <IntroduccionSimple />
+        </div>
+
+        {/* Dynamic content for hydration */}
       {isBrowser && (
         <ReactPageScroller
           pageOnChange={handlePageChange}

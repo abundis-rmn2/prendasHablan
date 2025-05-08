@@ -40,7 +40,7 @@ const Layout = ({ children, pageType, currentPage, setCurrentPage, sectionNames 
       </div>
       <footer
   style={{
-    marginTop: 'var(--space-5)',
+    marginTop: '-5px',
     fontSize: 'var(--font-sm)',
     bottom: 0,
     left: 0,
@@ -54,7 +54,8 @@ const Layout = ({ children, pageType, currentPage, setCurrentPage, sectionNames 
     flexDirection: 'row',
     alignItems: 'center',
     flexShrink: 0,
-    posittion: 'absolute',
+    position: 'fixed',
+    bottom: 0,
   }}
 >
   <span>{new Date().getFullYear()} <b>Las Prendas Hablan</b> es un proyecto conjunto entre:</span>
