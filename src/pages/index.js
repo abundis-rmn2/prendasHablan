@@ -24,6 +24,7 @@ const IndexPage = () => {
   const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const location = useLocation(); // Call useLocation unconditionally
   const csvData = useLoadCsvData();
+  console.log("IndexPage - csvData:", csvData); // Debugging csvData
   const preselectIndicio = isBrowser && location.pathname.startsWith("/indicio/");
   const { logAllForms } = useFormStorage();
   const [currentPage, setCurrentPage] = React.useState(0); // Default to the first page
@@ -56,9 +57,9 @@ const IndexPage = () => {
 
   React.useEffect(() => {
     if (isMobile()) {
-      alert("You are using a mobile device.");
+      console.log("Mobile device detected");
     } else {
-      alert("You are not using a mobile device.");
+      console.log("Non-mobile device detected");
     }
   }, []);
 
@@ -103,7 +104,10 @@ const IndexPage = () => {
         <div className="mobile-content static-content">
           <IntroduccionSimple />
           <Catalogo />
-          <Formulario />
+          <Formulario 
+            csvData={csvData} // Pass csvData explicitly to Formulario
+            preselectIndicio={preselectIndicio} 
+          />
         </div>
       ) : (
         isBrowser && (

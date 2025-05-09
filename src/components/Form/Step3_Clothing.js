@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import * as styles from "./FormStyles.module.css"; // Import shared styles
+import isMobile from "../../utils/IsMobile"; // Import isMobile utility
 
 const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noIndicioSelected, selectedIndicios, setSelectedIndicios }) => {
+  console.log("Step3_Clothing - csvData:", csvData); // Debugging csvData
+  
+
   const contactedAuthorities = watch("contacted_authorities");
 
   useEffect(() => {
@@ -22,6 +26,7 @@ const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noInd
     if (setValue) {
       setValue("recognized_clothing", options); // Update form state
     }
+
   };
 
   const handleDeselect = (id) => {
@@ -57,9 +62,34 @@ const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noInd
           </select>
           {errors.recognized_clothing && <span className={styles.errorText}>Campo obligatorio</span>}
         </label>
+        {/* Display selected items */}
+        {isMobile() && ( selectedIndicios.length > 0 && (
+          <div className={styles.selectedItems}>
+            <h4>Indicio Ideentificado:</h4>
+            <ul>
+              {selectedIndicios.map((selectedIndicio) => (
+                <li key={selectedIndicio.id} className={styles.selectedItem}>
+                  <div className="indicio-form-selected">
+                    <p className="image-container-indicio">
+                      <img 
+                        src={`https://rancho-izaguirre.abundis.com.mx/indicios/${selectedIndicio.id}.jpg`} 
+                        alt={selectedIndicio.INDICIO} 
+                        style={{ maxWidth: "100%", height: "auto", maxHeight: "20rem", borderBottom: "4px solid #a8c6cd", marginBottom: "1rem" }} 
+                      />
+                    </p>
+                    <p><b>Identificador Único de Indicio:</b> {selectedIndicio.INDICIO}</p>
+                    <p><b>Tipo:</b> {selectedIndicio.TIPO_DE_INDICIO}</p>
+                    <p><b>Color:</b> {selectedIndicio.COLOR}</p>
+                    <p><b>Marca:</b> {selectedIndicio.MARCA}</p>
+                    <p><b>Talla:</b> {selectedIndicio.TALLA}</p>
+                    <p><b>Observaciones:</b> {selectedIndicio.OBSERVACIONES}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
-
-
 
       <div className={styles.formGroup}>
         <label>

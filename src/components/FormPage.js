@@ -21,6 +21,8 @@ const FormPage = ({
   formContext = "default", 
   stepOrder = [1, 2, 3, 4] 
 }) => {
+  console.log("FormPage - csvData:", csvData); // Debugging csvData
+
   const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const { register, handleSubmit, watch, control, reset, setValue, formState: { errors } } = useForm();
   const { 
@@ -152,23 +154,23 @@ const FormPage = ({
           }}
           setShowModal={setShowModal} // Pass setShowModal to Modal
         />
-            )}
-            {showSummaryModal && (
+      )}
+      {showSummaryModal && (
         <SummaryModal
           data={storedData}
           onConfirm={handleFinalSubmit}
           onCancel={handleCancelSummary}
         />
-            )}
-    <div style={{ 
-      display: "flex", 
-      maxWidth: "1280px", 
-      margin: "0 auto", 
-      width: "100%", 
-      height: "100%",
-      flexDirection: isMobile() ? "column" : "row",
-      flexWrap: isMobile() ? "nowrap" : ""
-       }}>
+      )}
+      <div style={{ 
+        display: "flex", 
+        maxWidth: "1280px", 
+        margin: "0 auto", 
+        width: "100%", 
+        height: "100%",
+        flexDirection: isMobile() ? "column" : "row",
+        flexWrap: isMobile() ? "nowrap" : ""
+      }}>
         <div className="infoPrends" style={{ 
           width: isMobile() ? "100%" : "30%",
           background: "lightgray", 
@@ -177,7 +179,7 @@ const FormPage = ({
           placeContent: "stretch flex-end",
           marginBottom: marginBottom,
           marginTop: marginTop,
-          flexDirection: "column",
+          flexDirection: "column-reverse",
           flexWrap: "nowrap",
           alignContent: "center",
           justifyContent: "flex-end"
@@ -221,10 +223,10 @@ const FormPage = ({
           ) : (
             <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
               <FormProgress 
-            currentStep={stepIndex + 1} 
-            totalSteps={stepOrder.length} 
-            stepOrder={stepOrder} 
-            formContext={formContext} // Pass formContext to FormProgress</div>
+                currentStep={stepIndex + 1} 
+                totalSteps={stepOrder.length} 
+                stepOrder={stepOrder} 
+                formContext={formContext} // Pass formContext to FormProgress
               />
               {currentStep === 1 && (
                 <Step1BasicInfo
@@ -246,7 +248,7 @@ const FormPage = ({
                   setValue={setValue}
                   watch={watch}
                   errors={errors}
-                  csvData={csvData}
+                  csvData={csvData} // Pass csvData here
                   noIndicioSelected={!preselectIndicio}
                   selectedIndicios={selectedIndicios} // Pass shared state to Step3_Clothing
                   setSelectedIndicios={setSelectedIndicios} // Pass setter function
@@ -261,19 +263,19 @@ const FormPage = ({
               )}
               <div style={{ display: "flex", justifyContent: "space-around", marginTop: "1rem" }}>
                 {stepIndex > 0 && 
-                    <button 
-                      style={{backgroundColor: "#518e9b", color: "white", border: "none", padding: "0.5rem 1rem", cursor: "pointer", fontSize: "1.2rem", borderRadius: "4px"}} 
-                      type="button" onClick={prevStep}>Anterior</button>}
-                    <button 
-                      style={{backgroundColor: "#518e9b", color: "white", border: "none", padding: "0.5rem 1rem", cursor: "pointer", fontSize: "1.2rem", borderRadius: "4px"}} 
-                      type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
+                  <button 
+                    style={{backgroundColor: "#518e9b", color: "white", border: "none", padding: "0.5rem 1rem", cursor: "pointer", fontSize: "1.2rem", borderRadius: "4px"}} 
+                    type="button" onClick={prevStep}>Anterior</button>}
+                <button 
+                  style={{backgroundColor: "#518e9b", color: "white", border: "none", padding: "0.5rem 1rem", cursor: "pointer", fontSize: "1.2rem", borderRadius: "4px"}} 
+                  type="submit">{stepIndex === stepOrder.length - 1 ? "Enviar" : "Siguiente"}</button>
               </div>
             </form>
           )}
         </div>
         <div className="formInfo" style={{ 
           width: isMobile() ? "100%" : "20%",
-          display: "flex",
+          display: isMobile() ? "none" : "flex",
           flexDirection: "column",
           flexWrap: "wrap",
           alignContent: "center",

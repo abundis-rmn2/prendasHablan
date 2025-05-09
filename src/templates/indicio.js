@@ -13,9 +13,9 @@ const IndicioTemplate = ({ data }) => {
 
   React.useEffect(() => {
     if (isMobile()) {
-      alert("You are using a mobile device.");
+      console.log("You are using a mobile device.");
     } else {
-      alert("You are not using a mobile device.");
+      console.log("You are not using a mobile device.");
     }
   }, []);
 

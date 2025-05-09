@@ -52,7 +52,7 @@ const IndicioForm = ({ context, preselectIndicio, csvData, selectedIndicios }) =
     );
   }
 
-  return <div>default</div>;
+  return null;
 };
 
 export default IndicioForm;
