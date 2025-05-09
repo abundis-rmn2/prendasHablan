@@ -32,9 +32,12 @@ const IndicioTemplate = ({ data }) => {
       </Helmet>
       <style>{`
         ${!isBrowser ? 'html { overflow: scroll !important; }' : ''}
+        ${isMobile() ? 'html { overflow: scroll !important; }' : ''}
       `}</style>
 
-      <div className="static-content" style={{ padding: "20px", margin: "0 auto", maxWidth: "800px", marginTop: "5rem" }}>
+      <div className="static-content" style={{ 
+        display: isBrowser ? 'none' : 'block',
+        padding: "20px", margin: "0 auto", maxWidth: "800px", marginTop: "5rem" }}>
         {item.id && <img style={{ width: "128px" }} src={imageUrl} alt={item.INDICIO} className="indicio-image" />}
         <h4>{`Indicio: ${item.INDICIO}`}</h4>
         <ul>

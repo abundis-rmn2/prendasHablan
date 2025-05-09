@@ -13,6 +13,7 @@ import useFormStorage from "../hooks/useFormStorage";
 import logotipo from "../images/logotipo.png"; // Import the logo image
 import ShareButtonAside from "./ShareButtonAside"; // Import the new ShareButtonAside component
 import IndicioForm from "./Form/IndicioForm"; // Import IndicioForm
+import isMobile from "../utils/IsMobile"; // Import the isMobile utility
 
 const FormPage = ({ 
   csvData = [], 
@@ -123,8 +124,10 @@ const FormPage = ({
   const headerHeight = isBrowser
     ? getComputedStyle(document.documentElement).getPropertyValue("--header-height") || "4rem"
     : "4rem";
-  const marginBottom = `calc(${footerHeight} - 5px)`;
-  const marginTop = `calc(${headerHeight} - 15px)`;
+
+  const marginBottom = isMobile() ? "0" : `calc(${footerHeight} - 5px)`;
+  const marginTop = isMobile() ? "0" : `calc(${headerHeight} - 15px)`;
+
   console.log("Calculated margins:", { marginBottom, marginTop });
 
   if (isLoading) {
@@ -157,15 +160,23 @@ const FormPage = ({
           onCancel={handleCancelSummary}
         />
             )}
-            <div style={{ display: "flex", maxWidth: "1280px", margin: "0 auto", width: "100%", height: "100%" }}>
+    <div style={{ 
+      display: "flex", 
+      maxWidth: "1280px", 
+      margin: "0 auto", 
+      width: "100%", 
+      height: "100%",
+      flexDirection: isMobile() ? "column" : "row",
+      flexWrap: isMobile() ? "nowrap" : ""
+       }}>
         <div className="infoPrends" style={{ 
-          width: "30%",
+          width: isMobile() ? "100%" : "30%",
           background: "lightgray", 
           display: "flex",
           alignItems: "center",
           placeContent: "stretch flex-end",
-          marginBottom: "calc(-5px + 4rem)",
-          marginTop: "calc(-15px + 4rem)",
+          marginBottom: marginBottom,
+          marginTop: marginTop,
           flexDirection: "column",
           flexWrap: "nowrap",
           alignContent: "center",
@@ -192,7 +203,7 @@ const FormPage = ({
           </div>
         </div>
         <div className="form" style={{ 
-          width: "50%",
+          width: isMobile() ? "100%" : "50%",
           overflowY: "overlay",
           marginBottom: marginBottom,
           marginTop: marginTop,
@@ -202,6 +213,7 @@ const FormPage = ({
           alignItems: "center",
           justifyContent: "center",
           overflowX: "hidden",
+          overflow: isMobile() ? "visible" : "hidden overlay",
           padding: "1rem"
         }}>
           {stepIndex === stepOrder.length ? (
@@ -260,7 +272,7 @@ const FormPage = ({
           )}
         </div>
         <div className="formInfo" style={{ 
-          width: "20%",
+          width: isMobile() ? "100%" : "20%",
           display: "flex",
           flexDirection: "column",
           flexWrap: "wrap",

@@ -1,5 +1,6 @@
 import React from "react";
 import * as styles from "./FormStyles.module.css"; // Import shared styles
+import isMobile from "../../utils/IsMobile"; // Import isMobile utility
 
 const Modal = ({ show, onContinue, onStartNew, resetFormData, setShowModal }) => {
   if (!show) return null;
@@ -11,7 +12,13 @@ const Modal = ({ show, onContinue, onStartNew, resetFormData, setShowModal }) =>
       <div className={styles.modalContent} style={{ maxWidth: "500px" }}>
         <h3>Formulario Guardado</h3>
         <p>Dejaste un formulario lleno. ¿Quieres continuar donde lo dejaste, iniciar uno nuevo o borrar los datos?</p>
-        <div className={styles.modalActions}>
+        <div className={styles.modalActions}
+          style={{
+            flexDirection: isMobile() ? "column" : "row",
+            gap: isMobile() ? "1rem" : "0",
+            justifyContent: "space-between",
+            alignItems: isMobile() ? "stretch" : "center",
+          }}>
           <button
             className={styles.modalButton}
             onClick={() => {
