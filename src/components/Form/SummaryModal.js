@@ -1,6 +1,8 @@
 import React from "react";
+import ReactDOM from "react-dom"; // Import ReactDOM for creating portals
 import * as styles from "./FormStyles.module.css"; // Import shared styles
 import { postGoogleSheet } from "../../utils/postGoogleSheet"; // Import the utility function
+import isMobile from "../../utils/IsMobile"; // Import the isMobile utility function
 
 const SummaryModal = ({ data, onConfirm, onCancel }) => {
   if (!data || Object.keys(data).length === 0) return null;
@@ -36,11 +38,18 @@ const SummaryModal = ({ data, onConfirm, onCancel }) => {
     }
   };
 
-  return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+  return ReactDOM.createPortal(
+    <div className={styles.modalOverlay}
+         style={{position: isMobile() ? "fixed" : "absolute",       
+         }}>
+      <div className={styles.modalContent}
+         style={{height: isMobile() ? "90%" : "fit-content",       
+         }}>
         <h3>Resumen de la Información</h3>
-        <ul>
+        <ul
+          style={{height: isMobile() ? "80%" : "fit-content",
+          overflowY: isMobile() ? "scroll" : "auto",       
+          }}>
           {Object.entries(data)
             .filter(([key, value]) => key !== "step" && key !== "lastStep" && value) // Exclude step, lastStep, and empty values
             .map(([key, value]) => (
@@ -50,7 +59,7 @@ const SummaryModal = ({ data, onConfirm, onCancel }) => {
             ))}
         </ul>
         <div className={styles.modalActions}>
-        <button style={{ backgroundColor: "red" }} className={styles.modalButton} onClick={onCancel}>
+          <button style={{ backgroundColor: "red" }} className={styles.modalButton} onClick={onCancel}>
             Cancelar
           </button>
           <button className={styles.modalButton} onClick={handleConfirm}>
@@ -58,7 +67,8 @@ const SummaryModal = ({ data, onConfirm, onCancel }) => {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body // Render the modal content directly under the <body> tag
   );
 };
 

@@ -7,6 +7,7 @@
 
 import * as React from "react"
 import { useStaticQuery, graphql } from "gatsby"
+import isMobile from "../utils/IsMobile" // Import isMobile utility
 
 import Header from "./header"
 import "./layout.css"
@@ -45,7 +46,6 @@ const Layout = ({ children, pageType, currentPage, setCurrentPage, sectionNames 
     bottom: 0,
     left: 0,
     right: 0,
-    display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
     gap: '0.5rem',
@@ -56,6 +56,7 @@ const Layout = ({ children, pageType, currentPage, setCurrentPage, sectionNames 
     flexShrink: 0,
     position: 'fixed',
     bottom: 0,
+    display: isMobile() ? 'none' : 'flex',
   }}
 >
   <span>{new Date().getFullYear()} <b>Las Prendas Hablan</b> es un proyecto conjunto entre:</span>

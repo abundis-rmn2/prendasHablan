@@ -12,6 +12,7 @@ import Introduccion from "../components/inicio/Introduccion";
 import Catalogo from "../components/inicio/Catalogo";
 import Formulario from "../components/inicio/Formulario";
 import IntroduccionSimple from "../components/inicio/IntroduccionSimple";
+import isMobile from "../utils/IsMobile"; // Import isMobile utility
 
 const sections = [
   { name: "Introducción", hash: "introduccion", component: Introduccion },
@@ -23,6 +24,7 @@ const IndexPage = () => {
   const isBrowser = typeof window !== "undefined"; // Check for browser environment
   const location = useLocation(); // Call useLocation unconditionally
   const csvData = useLoadCsvData();
+  console.log("IndexPage - csvData:", csvData); // Debugging csvData
   const preselectIndicio = isBrowser && location.pathname.startsWith("/indicio/");
   const { logAllForms } = useFormStorage();
   const [currentPage, setCurrentPage] = React.useState(0); // Default to the first page
@@ -53,6 +55,14 @@ const IndexPage = () => {
     };
   }, [logAllForms]);
 
+  React.useEffect(() => {
+    if (isMobile()) {
+      console.log("Mobile device detected");
+    } else {
+      console.log("Non-mobile device detected");
+    }
+  }, []);
+
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex);
     if (isBrowser) {
@@ -80,18 +90,28 @@ const IndexPage = () => {
 
       <style>{`
         ${!isBrowser ? 'html { overflow: scroll !important; }' : ''}
+        ${isMobile() ? 'html { overflow: scroll !important; }' : ''}
       `}</style>
 
       {/* Static content for SSG */}
-        <div className="static-content" style={{ 
+      <div className="static-content" style={{ 
           display: isBrowser ? 'none' : 'block' 
           }}>
           <IntroduccionSimple />
         </div>
-
-        {/* Dynamic content for hydration */}
-      {isBrowser && (
-        <ReactPageScroller
+        
+      {isMobile() ? (
+        <div className="mobile-content static-content">
+          <IntroduccionSimple />
+          <Catalogo />
+          <Formulario 
+            csvData={csvData} // Pass csvData explicitly to Formulario
+            preselectIndicio={preselectIndicio} 
+          />
+        </div>
+      ) : (
+        isBrowser && (
+          <ReactPageScroller
           pageOnChange={handlePageChange}
           customPageNumber={currentPage}
           containerHeight={window.innerHeight}
@@ -111,6 +131,7 @@ const IndexPage = () => {
             );
           })}
         </ReactPageScroller>
+         )
       )}
     </Layout>
   );

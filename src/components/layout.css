@@ -253,6 +253,31 @@ pre tt:after {
   position: relative;
 }
 
+.mobile-content #introduccion {
+  height: fit-content;
+}
+.mobile-content a {
+  background-color: transparent;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  text-decoration: none;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+  background: #01909e;
+  padding: 3px;
+  font-weight: 600;
+}
+
+.mobile-content p {
+  text-align: justify;
+  margin: 5px
+}
+.mobile-content .introduccion-simple .introduccion-text p {
+  margin: 1rem;
+  line-height: 2rem;
+}
+
  footer {
   width: 100%;
   padding: var(--size-gutter);
