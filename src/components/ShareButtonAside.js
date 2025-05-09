@@ -18,7 +18,7 @@ const ShareButtonAside = ({ indicio, customStyles = {} }) => {
     width: "32px",
     height: "32px",
     margin: "0.5rem",
-    backgroundColor: "#fff", // White background
+    background: "#fff", // White background
     color: "#000", // Black icon
     borderRadius: "5px",
     textAlign: "center",

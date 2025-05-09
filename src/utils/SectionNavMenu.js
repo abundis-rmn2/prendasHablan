@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { Link } from "gatsby"; // Import Gatsby's Link component
 import "../styles/header.css"; // Import styles
+import isMobile from "../utils/IsMobile"; // Import isMobile utility
 
 const debounce = (func, delay) => {
   let timer;
@@ -19,7 +20,9 @@ const SectionNavMenu = ({ currentPage, sectionNames = [], onNavigate }) => { // 
   );
 
   return (
-    <nav className="section-nav-menu">
+    <nav className="section-nav-menu"
+      style={{display: isMobile() ? "none" : "flex"}} // Hide on mobile
+    >
       {sectionNames.map((name, pageIndex) => (
         <Link
           key={pageIndex}

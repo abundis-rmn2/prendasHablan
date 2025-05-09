@@ -51,14 +51,16 @@ const IndicioTemplate = ({ data }) => {
         indicio={item.INDICIO}>
         </ShareButtons>
       </div>
-      <div style={{ height: "100vh", display: isBrowser ? 'block' : 'none' }} className="indicio-template">
-        <FormPage 
-          csvData={[item]} 
-          preselectIndicio={true} 
-          formContext={`indicio_${item.INDICIO}`} 
-          stepOrder={[3, 2, 1, 4]} 
-        />
-      </div>
+      {isBrowser && (
+              <div style={{ height: "100vh", display: isBrowser ? 'block' : 'none' }} className="indicio-template">
+              <FormPage 
+                csvData={[item]} 
+                preselectIndicio={true} 
+                formContext={`indicio_${item.INDICIO}`} 
+                stepOrder={[3, 2, 1, 4]} 
+              />
+            </div>
+      )}
     </Layout>
   );
 };

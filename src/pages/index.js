@@ -92,6 +92,13 @@ const IndexPage = () => {
         ${isMobile() ? 'html { overflow: scroll !important; }' : ''}
       `}</style>
 
+      {/* Static content for SSG */}
+      <div className="static-content" style={{ 
+          display: isBrowser ? 'none' : 'block' 
+          }}>
+          <IntroduccionSimple />
+        </div>
+        
       {isMobile() ? (
         <div className="mobile-content static-content">
           <IntroduccionSimple />
@@ -99,7 +106,8 @@ const IndexPage = () => {
           <Formulario />
         </div>
       ) : (
-        <ReactPageScroller
+        isBrowser && (
+          <ReactPageScroller
           pageOnChange={handlePageChange}
           customPageNumber={currentPage}
           containerHeight={window.innerHeight}
@@ -119,6 +127,7 @@ const IndexPage = () => {
             );
           })}
         </ReactPageScroller>
+         )
       )}
     </Layout>
   );
