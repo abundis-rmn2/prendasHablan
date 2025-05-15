@@ -19,7 +19,7 @@ const FormPage = ({
   csvData = [], 
   preselectIndicio = false, 
   formContext = "default", 
-  stepOrder = [1, 2, 3, 4] 
+  stepOrder = [3, 2, 1, 4]
 }) => {
   console.log("FormPage - csvData:", csvData); // Debugging csvData
 

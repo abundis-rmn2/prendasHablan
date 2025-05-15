@@ -7,7 +7,7 @@ const Formulario = ({ csvData, preselectIndicio }) => (
       csvData={csvData}
       preselectIndicio={preselectIndicio}
       formContext="default"
-      stepOrder={[1, 2, 3, 4]}
+      stepOrder={[3, 2, 1, 4]}
     />
   </section>
 );

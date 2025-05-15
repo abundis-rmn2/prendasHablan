@@ -9,9 +9,9 @@ const FormProgress = ({ currentStep, totalSteps, stepOrder, formContext }) => {
   ];
 
   const customIcons = [
-    { path: "/images/icono-03.png", label: "Información básica" },
-    { path: "/images/icono-02.png", label: "Detalles de la desaparición" },
     { path: "/images/icono-01.png", label: "Identificación de Prendas" },
+    { path: "/images/icono-02.png", label: "Detalles de la desaparición" },
+    { path: "/images/icono-03.png", label: "Información básica" },
     { path: "/images/icono-04.png", label: "Contacto y consentimiento" },
   ];
 
