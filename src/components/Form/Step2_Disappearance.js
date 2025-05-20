@@ -13,6 +13,7 @@ const Step2_Disappearance = ({ register, watch, errors }) => {
           ¿Cuándo y dónde se le vio por última vez? (Año, municipio, estado, lugar) *
           <textarea
             className={styles.fullWidthInput}
+            placeholder="Ejemplo: Central Camionera, Tlaquepaque, Jalisco, 2023."
             {...register("last_seen", { required: true })}
           ></textarea>
           {errors.last_seen && <span className={styles.errorText}>Campo obligatorio</span>}

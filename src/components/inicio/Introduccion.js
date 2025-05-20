@@ -13,6 +13,7 @@ const Introduccion = () => (
         <img src={logotipo} alt="Logotipo" className="introduccion-logo" />
         <p>Desde <b>"Las Prendas Hablan"</b> damos un abrazo solidario a las familias y colectivos de búsqueda de personas desaparecidas de todo el país.</p>
         <a href="#formulario" className="formulario-button">Ir a Formulario</a>
+        <a style={{background:"#518e9b"}} href="/aviso-privacidad" className="formulario-button">Avíso de Privacidad</a>
       </div>
       {/* Right Div */}
       <div className={`introduccion-right ${styles.textJustify}`}>
@@ -27,7 +28,7 @@ const Introduccion = () => (
           Les compartimos esta encuesta mediante la cual esperamos obtener información para realizar la investigación que posteriormente les enviaremos. El objetivo de este formulario es que nos puedan dar datos que ayuden a identificar este circuito y que sea una herramienta que ayude a que todas y todos regresen a casa.
         </p>
         <p><span className="imp">
-          Cualquier duda por favor contáctenos; tengan certeza que sus datos personales serán cuidados y resguardados. Gracias de antemano.
+        Cualquier duda por favor contáctenos; tengan certeza que sus datos personales serán cuidados y resguardados, de acuerdo con nuestro aviso de privacidad que pueden consultar <a style={{textDecoration:"underline"}} href="/aviso-privacidad">aquí</a>
         </span></p>
         </div>
       </div>

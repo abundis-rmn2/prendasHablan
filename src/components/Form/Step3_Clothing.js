@@ -115,7 +115,7 @@ const Step3_Clothing = ({ register, setValue, watch, errors, csvData = [], noInd
 
       <div className={styles.formGroup}>
         <label>
-          ¿Tuviste acercamiento con alguna autoridad? *
+        Tras la identificación de esta prenda, ¿tuviste acercamiento con alguna autoridad? *
           <select
             className={styles.fullWidthInput}
             {...register("contacted_authorities", { required: true })}
